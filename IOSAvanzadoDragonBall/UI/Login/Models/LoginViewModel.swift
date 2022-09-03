@@ -7,7 +7,7 @@
 import Foundation
 
 protocol LoginViewModelProtocol: AnyObject {
-    func onPressEnterButton()
+    func onPressEnterButton(withUser user: String, andPassword password: String)
 }
 
 class LoginViewModel {
@@ -24,7 +24,30 @@ class LoginViewModel {
 
 // MARK: - LoginViewModelProtocol extension
 extension LoginViewModel: LoginViewModelProtocol {
-    func onPressEnterButton() {
-        viewDelegate?.navigateToMap()
+    func onPressEnterButton(withUser user: String, andPassword password: String) {
+        // TODO: Check user and password correction before calling API
+        login(withUser: user, andPassword: password)
+    }
+    
+    private func login(withUser user: String, andPassword password: String) {
+        let networkHelper = NetworkHelper()
+        networkHelper.login(withUser: user, andPassword: password) { token, error in
+
+            guard error == nil else {
+                // TODO: Manage errors
+                print("An error has occurred while login")
+                return
+            }
+            
+            guard token != nil else {
+                // TODO: Manage no token
+                print("No token received while login")
+                return
+            }
+            // Navigate to map involves UIUpdate -> send to main thread
+            DispatchQueue.main.async {
+                self.viewDelegate?.navigateToMap()
+            }
+        }
     }
 }

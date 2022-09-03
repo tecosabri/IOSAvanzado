@@ -14,6 +14,8 @@ class LoginViewController: UIViewController {
     
     // MARK: - IBOutlets
     @IBOutlet weak var enterButton: UIButton!
+    @IBOutlet weak var userTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
     
     // MARK: - Public properties
     // MVC properties
@@ -31,7 +33,10 @@ class LoginViewController: UIViewController {
     
     // MARK: - IBActions
     @IBAction func onPressEnterButton(_ sender: Any) {
-        viewModel?.onPressEnterButton()
+        // TODO: Check nil pass and user, not empty etc
+        guard let user = userTextField.text else {return}
+        guard let password = passwordTextField.text else {return}
+        viewModel?.onPressEnterButton(withUser: user, andPassword: password)
     }
 }
 
@@ -40,4 +45,6 @@ extension LoginViewController: LoginViewControllerProtocol {
     func navigateToMap() {
         navigationController?.pushViewController(MapViewController(nibName: "MapView", bundle: nil), animated: true)
     }
+    
+
 }

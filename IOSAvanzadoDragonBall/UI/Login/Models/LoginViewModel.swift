@@ -4,7 +4,12 @@
 //  Created by Ismael Sabri on 2/9/22.
 //  Copyright (c) 2022 Ismael Sabri. All rights reserved.
 //
-import Foundation
+import UIKit
+import RegexBuilder
+
+enum LoginErrors: Error {
+    case userMail(error: String)
+}
 
 protocol LoginViewModelProtocol: AnyObject {
     func onPressEnterButton(withUser user: String, andPassword password: String)
@@ -24,9 +29,37 @@ class LoginViewModel {
 
 // MARK: - LoginViewModelProtocol extension
 extension LoginViewModel: LoginViewModelProtocol {
+    
+    // MARK: - Login functions
     func onPressEnterButton(withUser user: String, andPassword password: String) {
-        // TODO: Check user and password correction before calling API
+        // Mail check with error handling
+        do {
+            try check(user: user)
+        } catch LoginErrors.userMail(let errorString){
+            print("Error: \(errorString)")
+        } catch {
+            print("Unknown error")
+        }
         login(withUser: user, andPassword: password)
+    }
+    
+    private func check(user: String) throws {
+        // Create mail regex parts
+        let recipientName = /^[A-Za-z0-9_\-!#$%&'*+\/=?^`{|]+/  // All possible characters before ampersand at least one time hisme14
+        let ampersand = /@/
+        let domainName = /[A-Za-z0-9\-]+/
+        let topLevelDomain = /\.[a-z]+$/
+        // Create mail regex struct capturing the recipient and domain names
+        let mailRegex = Regex {
+            Capture{recipientName} // This item is match.1 as match.0 is the wholeMatch
+            Capture{ampersand}
+            Capture{domainName}
+            Capture{topLevelDomain}
+        }
+        // Check user and send error if not matched
+        guard user.wholeMatch(of: mailRegex) != nil else {
+            throw LoginErrors.userMail(error: "User mail has not the correct format")
+        }
     }
     
     private func login(withUser user: String, andPassword password: String) {
@@ -44,10 +77,17 @@ extension LoginViewModel: LoginViewModelProtocol {
                 print("No token received while login")
                 return
             }
+            
+            // TODO: Save password, update (updating when error thrown is .duplicatedEntry) if needed, delete..
+            
+            
             // Navigate to map involves UIUpdate -> send to main thread
             DispatchQueue.main.async {
                 self.viewDelegate?.navigateToMap()
             }
         }
     }
+    
+    
+    
 }

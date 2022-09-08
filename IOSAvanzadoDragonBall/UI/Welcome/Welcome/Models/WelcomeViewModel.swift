@@ -7,7 +7,7 @@
 import Foundation
 
 protocol WelcomeViewModelProtocol: AnyObject {
-    func onPressLoginButton()
+    func onViewLoad()
 }
 
 class WelcomeViewModel {
@@ -24,7 +24,10 @@ class WelcomeViewModel {
 
 // MARK: - WelcomeViewModelProtocol extension
 extension WelcomeViewModel: WelcomeViewModelProtocol {
-    func onPressLoginButton() {
-        viewDelegate?.navigateToLoginScene()
+    func onViewLoad() {
+        self.viewDelegate?.fadeOutBackgroundImage()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
+            self.viewDelegate?.navigateToLoginScene()
+        }
     }
 }

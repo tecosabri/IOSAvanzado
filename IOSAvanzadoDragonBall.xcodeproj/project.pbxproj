@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		873C2E5428C90EBE00D41C6E /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873C2E5328C90EBE00D41C6E /* UIViewControllerExtension.swift */; };
 		879F5EA328C262FF00CA7F79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5EA228C262FF00CA7F79 /* AppDelegate.swift */; };
 		879F5EA528C262FF00CA7F79 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5EA428C262FF00CA7F79 /* SceneDelegate.swift */; };
 		879F5EAD28C262FF00CA7F79 /* IOSAvanzadoDragonBall.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 879F5EAB28C262FF00CA7F79 /* IOSAvanzadoDragonBall.xcdatamodeld */; };
@@ -24,6 +25,11 @@
 		879F5F0528C274A900CA7F79 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5F0028C274A800CA7F79 /* MapViewModel.swift */; };
 		879F5F0628C274A900CA7F79 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5F0228C274A800CA7F79 /* MapViewController.swift */; };
 		879F5F0728C274A900CA7F79 /* MapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 879F5F0428C274A800CA7F79 /* MapView.xib */; };
+		879F5F0928C27C7300CA7F79 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5F0828C27C7300CA7F79 /* NetworkHelper.swift */; };
+		879F5F0C28C27CA200CA7F79 /* HeroModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5F0A28C27CA200CA7F79 /* HeroModel.swift */; };
+		879F5F0D28C27CA200CA7F79 /* LocalDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5F0B28C27CA200CA7F79 /* LocalDataModel.swift */; };
+		879F5F0F28C27CC300CA7F79 /* TransformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5F0E28C27CC300CA7F79 /* TransformationModel.swift */; };
+		879F5F6C28C3380B00CA7F79 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5F6B28C3380B00CA7F79 /* KeychainManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,11 +50,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		873C2E5328C90EBE00D41C6E /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		879F5E9F28C262FF00CA7F79 /* IOSAvanzadoDragonBall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IOSAvanzadoDragonBall.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		879F5EA228C262FF00CA7F79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		879F5EA428C262FF00CA7F79 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		879F5EAC28C262FF00CA7F79 /* IOSAvanzadoDragonBall.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IOSAvanzadoDragonBall.xcdatamodel; sourceTree = "<group>"; };
-		879F5EAE28C2630000CA7F79 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		879F5EAE28C2630000CA7F79 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = IOSAvanzadoDragonBall/App/Resources/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		879F5EB128C2630000CA7F79 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		879F5EB328C2630000CA7F79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		879F5EB828C2630000CA7F79 /* IOSAvanzadoDragonBallTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IOSAvanzadoDragonBallTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,6 +72,11 @@
 		879F5F0028C274A800CA7F79 /* MapViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		879F5F0228C274A800CA7F79 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		879F5F0428C274A800CA7F79 /* MapView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapView.xib; sourceTree = "<group>"; };
+		879F5F0828C27C7300CA7F79 /* NetworkHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
+		879F5F0A28C27CA200CA7F79 /* HeroModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroModel.swift; sourceTree = "<group>"; };
+		879F5F0B28C27CA200CA7F79 /* LocalDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalDataModel.swift; sourceTree = "<group>"; };
+		879F5F0E28C27CC300CA7F79 /* TransformationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformationModel.swift; sourceTree = "<group>"; };
+		879F5F6B28C3380B00CA7F79 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +165,7 @@
 		879F5ED628C2644000CA7F79 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				873C2E5328C90EBE00D41C6E /* UIViewControllerExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -187,6 +200,8 @@
 		879F5EDA28C2647D00CA7F79 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				879F5F0E28C27CC300CA7F79 /* TransformationModel.swift */,
+				879F5F0A28C27CA200CA7F79 /* HeroModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -194,6 +209,9 @@
 		879F5EDB28C264A300CA7F79 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				879F5F0B28C27CA200CA7F79 /* LocalDataModel.swift */,
+				879F5F0828C27C7300CA7F79 /* NetworkHelper.swift */,
+				879F5F6B28C3380B00CA7F79 /* KeychainManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -463,12 +481,18 @@
 			files = (
 				879F5EFA28C26E1800CA7F79 /* LoginViewController.swift in Sources */,
 				879F5EA328C262FF00CA7F79 /* AppDelegate.swift in Sources */,
+				873C2E5428C90EBE00D41C6E /* UIViewControllerExtension.swift in Sources */,
+				879F5F0C28C27CA200CA7F79 /* HeroModel.swift in Sources */,
 				879F5EEC28C26C9F00CA7F79 /* WelcomeViewController.swift in Sources */,
 				879F5EF928C26E1800CA7F79 /* LoginViewModel.swift in Sources */,
+				879F5F6C28C3380B00CA7F79 /* KeychainManager.swift in Sources */,
+				879F5F0D28C27CA200CA7F79 /* LocalDataModel.swift in Sources */,
 				879F5F0628C274A900CA7F79 /* MapViewController.swift in Sources */,
 				879F5EEB28C26C9F00CA7F79 /* WelcomeViewModel.swift in Sources */,
 				879F5EA528C262FF00CA7F79 /* SceneDelegate.swift in Sources */,
+				879F5F0F28C27CC300CA7F79 /* TransformationModel.swift in Sources */,
 				879F5EAD28C262FF00CA7F79 /* IOSAvanzadoDragonBall.xcdatamodeld in Sources */,
+				879F5F0928C27C7300CA7F79 /* NetworkHelper.swift in Sources */,
 				879F5F0528C274A900CA7F79 /* MapViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -647,6 +671,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -674,6 +699,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

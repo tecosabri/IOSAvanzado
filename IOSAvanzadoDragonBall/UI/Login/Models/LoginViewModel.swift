@@ -18,6 +18,7 @@ protocol LoginViewModelProtocol: AnyObject {
     func onUserTextFieldReturnKey()
     func onPasswordTextFieldEditChange(withUser user: String, andPassword password: String)
     func onPasswordTextFieldReturnKey(whenEnterButtonIsEnabledIs isEnabled: Bool)
+    func onDecideToSavePassword(withAnswer answer: Bool)
 }
     
     class LoginViewModel {
@@ -43,7 +44,8 @@ protocol LoginViewModelProtocol: AnyObject {
         
         // MARK: - Login functions
         func onPressEnterButton(withUser user: String, andPassword password: String) {
-            
+            // Set activity indicator to show that login is ocurring
+            viewDelegate?.switchActivityIndicator()
             // Check if password is already in keychain
 //            guard let password = try? KeychainManager.getPassword(forAccount: user) else {
 //                // TODO: SHOW POPUP TO AUTOCOMPLETE
@@ -52,7 +54,6 @@ protocol LoginViewModelProtocol: AnyObject {
             // TODO: Save password, update (updating when error thrown is .duplicatedEntry) if needed, delete..
             // First check if user is in keychain. If its in keychain show autocomplete option
             login(withUser: user, andPassword: password) // If login error, show login error (manage login errors showing popup)
-            
         }
         
         private func check(user: String) -> Bool{
@@ -86,23 +87,13 @@ protocol LoginViewModelProtocol: AnyObject {
             let networkHelper = NetworkHelper()
             
             networkHelper.login(withUser: user, andPassword: password) { token, error in
+                // Check null error and not nil token. Show alerts if needed
+                self.check(error: error)
+                self.check(token: token)
                 
-                guard error == nil else {
-                    // TODO: Manage errors
-                    print("An error has occurred while login")
-                    return
-                }
-                
-                guard token != nil else {
-                    // TODO: Manage no token
-                    print("No token received while login")
-                    return
-                }
-                
-                // TODO: Offer to save the password
-                
-                // Navigate to map involves UIUpdate -> send to main thread
+                // Sent to main as it involves UI modifications
                 DispatchQueue.main.async {
+                    self.viewDelegate?.switchActivityIndicator()
                     self.viewDelegate?.navigateToMap()
                     self.viewDelegate?.swipePasswordContent()
                     self.viewDelegate?.disableEnterButton()
@@ -110,10 +101,32 @@ protocol LoginViewModelProtocol: AnyObject {
             }
         }
         
+        private func check(error: NetworkError?) {
+            guard error == nil else {
+                DispatchQueue.main.async {
+                    self.viewDelegate?.switchActivityIndicator()
+                    self.viewDelegate?.showLoginErrorAlert(withMessage: "Incorrect password")
+                }
+                return
+            }
+        }
+        private func check(token: String?) {
+            guard token != nil else {
+                DispatchQueue.main.async {
+                    self.viewDelegate?.switchActivityIndicator()
+                }
+                return
+            }
+        }
+        
+        private func isPasswordAlreadySaved(forAccount account: String) -> Bool {
+            guard (try? KeychainManager.getPassword(forAccount: account)) != nil else {return false}
+        }
+        
         func onPasswordTextFieldBeginEditing(withUser user: String) {
             // Mail check with error handling
             guard check(user: user) == true else {
-                viewDelegate?.showUserErrorAlert()
+                viewDelegate?.showUserErrorAlert(withMessage: "User mail has not the correct format")
                 return
             }
         }
@@ -134,6 +147,10 @@ protocol LoginViewModelProtocol: AnyObject {
             if isEnabled {
                 viewDelegate?.pushEnterButton()
             }
+        }
+        
+        func onDecideToSavePassword(withAnswer answer: Bool) {
+            KeychainManager.
         }
 }
 

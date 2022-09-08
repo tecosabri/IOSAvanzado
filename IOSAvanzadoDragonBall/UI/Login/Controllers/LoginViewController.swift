@@ -9,8 +9,11 @@ import UIKit
 protocol LoginViewControllerProtocol: AnyObject {
     func hideBackButton()
     func fadeIn()
+    func switchActivityIndicator()
+    func showLoginErrorAlert(withMessage message: String)
+    func showUserErrorAlert(withMessage message: String)
+    func showDecideToSavePassword(withTitle title: String)
     func navigateToMap()
-    func showUserErrorAlert()
     func focusUserTextField()
     func focusPasswordTextField()
     func enableEnterButton()
@@ -25,6 +28,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var enterButton: UIButton!
     @IBOutlet weak var userTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var gokuImage: UIImageView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Public properties
     // MVC properties
@@ -79,16 +84,37 @@ extension LoginViewController: LoginViewControllerProtocol {
     
     func fadeIn() {
         UIViewPropertyAnimator(duration: 4, curve: .easeOut, animations: {
-            self.view.alpha = 1
+            self.gokuImage.alpha = 1
         }).startAnimation()
+    }
+    
+    func switchActivityIndicator() {
+        switch activityIndicator.isAnimating {
+        case true:
+            activityIndicator.stopAnimating()
+        case false:
+            activityIndicator.startAnimating()
+        }
+    }
+    
+    func showLoginErrorAlert(withMessage message: String) {
+        showOkAlert(withTitle: message) { _ in
+            self.focusPasswordTextField()
+        }
+    }
+    
+    func showDecideToSavePassword(withTitle title: String) {
+        showYesNoAlert(withTitle: title, andMessage: "") { answer in
+            self.viewModel?.onDecideToSavePassword(withAnswer: answer)
+        }
     }
     
     func navigateToMap() {
         navigationController?.pushViewController(MapViewController(nibName: "MapView", bundle: nil), animated: true)
     }
     
-    func showUserErrorAlert() {
-        showOkAlert(withTitle: "User mail has wrong format, enter a valid mail address") { _ in
+    func showUserErrorAlert(withMessage message: String) {
+        showOkAlert(withTitle: message) { _ in
             self.focusUserTextField()
         }
     }

@@ -70,8 +70,8 @@ class KeychainManager {
             print("Password retrieved from keychain succesfully")
             
             guard let dataResult = result as? Data else {
-                print("Error while retrieving the password from keychain: unable to convert bytearray password to data")
-                return nil
+                print("Error while converting the retrieved password from keychain: unable to convert bytearray password to data")
+                throw KeychainError.unknown(queryStatus)
             }
             let stringResult = String(decoding: dataResult, as: UTF8.self)
             

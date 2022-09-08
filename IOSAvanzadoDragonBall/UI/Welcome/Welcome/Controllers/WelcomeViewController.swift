@@ -8,12 +8,13 @@ import UIKit
 
 protocol WelcomeViewControllerProtocol: AnyObject {
     func navigateToLoginScene()
+    func fadeOutBackgroundImage()
 }
 
 class WelcomeViewController: UIViewController {
     
     // MARK: - IBOutlets
-    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var titleImage: UIImageView!
     
     // MARK: - Public properties
     // MVC properties
@@ -23,21 +24,25 @@ class WelcomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setViewModel()
+        viewModel?.onViewLoad()
     }
     
     private func setViewModel() {
         self.viewModel = WelcomeViewModel(viewDelegate: self)
-    }
-    
-    // MARK: - IBFunctions
-    @IBAction func onPressLoginButton(_ sender: Any) {
-        viewModel?.onPressLoginButton()
     }
 }
 
 // MARK: - WelcomeViewControllerProtocol extension
 extension WelcomeViewController: WelcomeViewControllerProtocol {
     func navigateToLoginScene() {
-        navigationController?.pushViewController(LoginViewController(nibName: "LoginView", bundle: nil), animated: true)
+        navigationController?.pushViewController(LoginViewController(nibName: "LoginView", bundle: nil), animated: false)
+    }
+    
+    func fadeOutBackgroundImage() {
+        UIViewPropertyAnimator(duration: 2, curve: .easeOut, animations: {
+            self.titleImage.alpha = 0
+        }).startAnimation()
     }
 }
+
+

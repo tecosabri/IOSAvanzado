@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		873C2E5428C90EBE00D41C6E /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873C2E5328C90EBE00D41C6E /* UIViewControllerExtension.swift */; };
 		879F5EA328C262FF00CA7F79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5EA228C262FF00CA7F79 /* AppDelegate.swift */; };
 		879F5EA528C262FF00CA7F79 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5EA428C262FF00CA7F79 /* SceneDelegate.swift */; };
 		879F5EAD28C262FF00CA7F79 /* IOSAvanzadoDragonBall.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 879F5EAB28C262FF00CA7F79 /* IOSAvanzadoDragonBall.xcdatamodeld */; };
@@ -49,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		873C2E5328C90EBE00D41C6E /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		879F5E9F28C262FF00CA7F79 /* IOSAvanzadoDragonBall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IOSAvanzadoDragonBall.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		879F5EA228C262FF00CA7F79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		879F5EA428C262FF00CA7F79 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 		879F5ED628C2644000CA7F79 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				873C2E5328C90EBE00D41C6E /* UIViewControllerExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -478,6 +481,7 @@
 			files = (
 				879F5EFA28C26E1800CA7F79 /* LoginViewController.swift in Sources */,
 				879F5EA328C262FF00CA7F79 /* AppDelegate.swift in Sources */,
+				873C2E5428C90EBE00D41C6E /* UIViewControllerExtension.swift in Sources */,
 				879F5F0C28C27CA200CA7F79 /* HeroModel.swift in Sources */,
 				879F5EEC28C26C9F00CA7F79 /* WelcomeViewController.swift in Sources */,
 				879F5EF928C26E1800CA7F79 /* LoginViewModel.swift in Sources */,

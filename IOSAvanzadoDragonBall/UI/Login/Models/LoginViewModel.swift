@@ -15,10 +15,12 @@ protocol LoginViewModelProtocol: AnyObject {
     func onViewLoad()
     func onPressEnterButton(withUser user: String, andPassword password: String)
     func onPasswordTextFieldBeginEditing(withUser user: String)
-    func onUserTextFieldReturnKey()
+    func onUserTextFieldReturnKey(withUser user: String)
     func onPasswordTextFieldEditChange(withUser user: String, andPassword password: String)
     func onPasswordTextFieldReturnKey(whenEnterButtonIsEnabledIs isEnabled: Bool)
-    func onDecideToSavePassword(withAnswer answer: Bool)
+    func onDecideToSave(password: String, forUser user: String, withAnswer answer: Bool)
+    func onDecideToAutocompletePassword(withAnswer answer: Bool, andUser user: String)
+    func onViewWillAppear(withUser user: String)
 }
     
     class LoginViewModel {
@@ -92,10 +94,11 @@ protocol LoginViewModelProtocol: AnyObject {
                 self.check(token: token)
                 
                 // Sent to main as it involves UI modifications
-                DispatchQueue.main.async {
+                DispatchQueue.main.sync {
                     self.viewDelegate?.switchActivityIndicator()
-                    self.viewDelegate?.navigateToMap()
                     self.viewDelegate?.swipePasswordContent()
+                    self.viewDelegate?.navigateToMap()
+                    self.saveOrNotSave(password: password, forUser: user)
                     self.viewDelegate?.disableEnterButton()
                 }
             }
@@ -118,9 +121,9 @@ protocol LoginViewModelProtocol: AnyObject {
                 return
             }
         }
-        
-        private func isPasswordAlreadySaved(forAccount account: String) -> Bool {
-            guard (try? KeychainManager.getPassword(forAccount: account)) != nil else {return false}
+        private func saveOrNotSave(password: String, forUser user: String) {
+            guard isPasswordAlreadySaved(forAccount: user) == false else {return}
+            self.viewDelegate?.showDecideToSave(password: password, forUser: user, withTitle: "Save password for user mail \(user)?")
         }
         
         func onPasswordTextFieldBeginEditing(withUser user: String) {
@@ -131,6 +134,11 @@ protocol LoginViewModelProtocol: AnyObject {
             }
         }
         
+        private func isPasswordAlreadySaved(forAccount account: String) -> Bool {
+            guard (try? KeychainManager.getPassword(forAccount: account)) != nil else {return false}
+            return true
+        }
+        
         func onPasswordTextFieldEditChange(withUser user: String, andPassword password: String) {
             if user.count > 0 && password.count > 3 {
                 viewDelegate?.enableEnterButton()
@@ -139,8 +147,13 @@ protocol LoginViewModelProtocol: AnyObject {
             }
         }
         
-        func onUserTextFieldReturnKey() {
+        func onUserTextFieldReturnKey(withUser user: String) {
             viewDelegate?.focusPasswordTextField()
+            
+            // Autocomplete check
+            if isPasswordAlreadySaved(forAccount: user) {
+                viewDelegate?.showDecideToAutocomplete(withTitle: "Autocomplete password for user mail \(user)?", andUser: user)
+            }
         }
         
         func onPasswordTextFieldReturnKey(whenEnterButtonIsEnabledIs isEnabled: Bool) {
@@ -149,8 +162,30 @@ protocol LoginViewModelProtocol: AnyObject {
             }
         }
         
-        func onDecideToSavePassword(withAnswer answer: Bool) {
-            KeychainManager.
+        func onDecideToSave(password: String, forUser user: String, withAnswer answer: Bool) {
+            guard answer == true else {return}
+            
+            do {
+                try KeychainManager.save(password: password, forAccount: user)
+            } catch {
+                viewDelegate?.showAlert(withMessage: "Unable to save the password")
+            }
+        }
+        
+        func onDecideToAutocompletePassword(withAnswer answer: Bool, andUser user: String) {
+            guard answer == true else {
+                return
+            }
+            guard let password = try? KeychainManager.getPassword(forAccount: user) else {return}
+            viewDelegate?.autocompletePasswordTextField(withPassword: password)
+            viewDelegate?.enableEnterButton()
+//            try? KeychainManager.deletePassword(forAccount: user) // Uncomment to test first time of logging
+        }
+        
+        func onViewWillAppear(withUser user: String) {
+            if isPasswordAlreadySaved(forAccount: user) {
+                viewDelegate?.showDecideToAutocomplete(withTitle: "Autocomplete password for user mail \(user)?", andUser: user)
+            }
         }
 }
 

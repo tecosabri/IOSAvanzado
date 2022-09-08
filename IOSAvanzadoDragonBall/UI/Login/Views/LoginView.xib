@@ -35,6 +35,7 @@
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                     <connections>
+                        <action selector="onUserTextFieldEndEdit:" destination="-1" eventType="editingDidEnd" id="Y8s-3u-OdG"/>
                         <action selector="onUserTextFieldReturnKey:" destination="-1" eventType="editingDidEndOnExit" id="4pM-5b-gHW"/>
                     </connections>
                 </textField>

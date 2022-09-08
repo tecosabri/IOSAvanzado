@@ -12,7 +12,8 @@ protocol LoginViewControllerProtocol: AnyObject {
     func switchActivityIndicator()
     func showLoginErrorAlert(withMessage message: String)
     func showUserErrorAlert(withMessage message: String)
-    func showDecideToSavePassword(withTitle title: String)
+    func showDecideToSave(password: String, forUser user: String, withTitle title: String)
+    func showDecideToAutocomplete(withTitle title: String, andUser user: String)
     func navigateToMap()
     func focusUserTextField()
     func focusPasswordTextField()
@@ -20,6 +21,8 @@ protocol LoginViewControllerProtocol: AnyObject {
     func disableEnterButton()
     func pushEnterButton()
     func swipePasswordContent()
+    func autocompletePasswordTextField(withPassword password: String)
+    func showAlert(withMessage message: String)
 }
 
 class LoginViewController: UIViewController {
@@ -42,6 +45,11 @@ class LoginViewController: UIViewController {
         viewModel?.onViewLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        guard let user = userTextField.text else {return}
+        viewModel?.onViewWillAppear(withUser: user)
+    }
+    
     private func setViewModel() {
         self.viewModel = LoginViewModel(viewDelegate: self)
     }
@@ -60,7 +68,8 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func onUserTextFieldReturnKey(_ sender: Any) {
-        viewModel?.onUserTextFieldReturnKey()
+        guard let user = userTextField.text else {return}
+        viewModel?.onUserTextFieldReturnKey(withUser: user)
     }
     
     @IBAction func onPasswordTextFieldEditChange(_ sender: Any) {
@@ -72,6 +81,12 @@ class LoginViewController: UIViewController {
     @IBAction func onPasswordTextFieldReturnKey(_ sender: Any) {
         let enterButtonIsEnabled = enterButton.isEnabled
         viewModel?.onPasswordTextFieldReturnKey(whenEnterButtonIsEnabledIs: enterButtonIsEnabled)
+    }
+    
+    
+    @IBAction func onUserTextFieldEndEdit(_ sender: Any) {
+        guard let user = userTextField.text else {return}
+        viewModel?.onUserTextFieldReturnKey(withUser: user)
     }
 }
 
@@ -103,9 +118,15 @@ extension LoginViewController: LoginViewControllerProtocol {
         }
     }
     
-    func showDecideToSavePassword(withTitle title: String) {
+    func showDecideToSave(password: String, forUser user: String, withTitle title: String) {
         showYesNoAlert(withTitle: title, andMessage: "") { answer in
-            self.viewModel?.onDecideToSavePassword(withAnswer: answer)
+            self.viewModel?.onDecideToSave(password: password, forUser: user, withAnswer: answer)
+        }
+    }
+    
+    func showDecideToAutocomplete(withTitle title: String, andUser user: String) {
+        showYesNoAlert(withTitle: title, andMessage: "") { answer in
+            self.viewModel?.onDecideToAutocompletePassword(withAnswer: answer, andUser: user)
         }
     }
     
@@ -145,4 +166,13 @@ extension LoginViewController: LoginViewControllerProtocol {
     func swipePasswordContent() {
         passwordTextField.text = ""
     }
+    
+    func autocompletePasswordTextField(withPassword password: String) {
+        passwordTextField.text = password
+    }
+    
+    func showAlert(withMessage message: String) {
+        showOkAlert(withTitle: message, completion: nil)
+    }
+
 }

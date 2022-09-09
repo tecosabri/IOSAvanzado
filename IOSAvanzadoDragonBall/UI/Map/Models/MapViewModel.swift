@@ -7,22 +7,36 @@
 import Foundation
 
 protocol MapViewModelProtocol: AnyObject {
-    
+    func onViewWillAppear()
 }
 
 class MapViewModel {
     
-    // MARK: - Private properties
+    // Mark: - Constants
+    private let coreDataManager = CoreDataManager()
+    private let networkHelper: NetworkHelper
+
+    
+    // MARK: - Variables
     // MVC properties
     private weak var viewDelegate: MapViewControllerProtocol?
     
     // MARK: - Lifecycle
-    init(viewDelegate: MapViewControllerProtocol) {
+    init(viewDelegate: MapViewControllerProtocol, withToken token: String?) {
         self.viewDelegate = viewDelegate
+        self.networkHelper = NetworkHelper(token: token)
     }
+
 }
 
 // MARK: - MapViewModelProtocol extension
 extension MapViewModel: MapViewModelProtocol {
-    
+    func onViewWillAppear() {
+        saveHeroesToCoreData()
+    }
+    private func saveHeroesToCoreData() {
+        networkHelper.getHeroes { heroes, _ in
+            heroes.forEach { self.coreDataManager.create(hero: $0)}
+        }
+    }
 }

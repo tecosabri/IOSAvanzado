@@ -5,6 +5,7 @@
 //  Copyright (c) 2022 Ismael Sabri. All rights reserved.
 //
 import UIKit
+import MapKit
 
 protocol MapViewControllerProtocol: AnyObject {
     
@@ -13,19 +14,24 @@ protocol MapViewControllerProtocol: AnyObject {
 class MapViewController: UIViewController {
     
     // MARK: - IBOutlets
+    @IBOutlet var mapView: MKMapView!
     
-    // MARK: - Public properties
+    // MARK: - Variables
     // MVC properties
     var viewModel: MapViewModelProtocol?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setViewModel()
     }
-    
-    private func setViewModel() {
-        self.viewModel = MapViewModel(viewDelegate: self)
+
+    func setViewModel(withToken token: String?) {
+        self.viewModel = MapViewModel(viewDelegate: self, withToken: token)
+    }
+ 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel?.onViewWillAppear()
     }
 }
 

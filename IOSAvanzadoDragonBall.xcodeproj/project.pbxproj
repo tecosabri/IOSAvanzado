@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		873C2E5428C90EBE00D41C6E /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873C2E5328C90EBE00D41C6E /* UIViewControllerExtension.swift */; };
+		873C2E5628CB3B7300D41C6E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873C2E5528CB3B7300D41C6E /* CoreDataManager.swift */; };
+		873C2E5828CB50D000D41C6E /* RegexHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873C2E5728CB50D000D41C6E /* RegexHelper.swift */; };
 		879F5EA328C262FF00CA7F79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5EA228C262FF00CA7F79 /* AppDelegate.swift */; };
 		879F5EA528C262FF00CA7F79 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5EA428C262FF00CA7F79 /* SceneDelegate.swift */; };
 		879F5EAD28C262FF00CA7F79 /* IOSAvanzadoDragonBall.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 879F5EAB28C262FF00CA7F79 /* IOSAvanzadoDragonBall.xcdatamodeld */; };
@@ -51,6 +53,8 @@
 
 /* Begin PBXFileReference section */
 		873C2E5328C90EBE00D41C6E /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		873C2E5528CB3B7300D41C6E /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		873C2E5728CB50D000D41C6E /* RegexHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegexHelper.swift; sourceTree = "<group>"; };
 		879F5E9F28C262FF00CA7F79 /* IOSAvanzadoDragonBall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IOSAvanzadoDragonBall.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		879F5EA228C262FF00CA7F79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		879F5EA428C262FF00CA7F79 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -212,6 +216,8 @@
 				879F5F0B28C27CA200CA7F79 /* LocalDataModel.swift */,
 				879F5F0828C27C7300CA7F79 /* NetworkHelper.swift */,
 				879F5F6B28C3380B00CA7F79 /* KeychainManager.swift */,
+				873C2E5528CB3B7300D41C6E /* CoreDataManager.swift */,
+				873C2E5728CB50D000D41C6E /* RegexHelper.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -485,6 +491,7 @@
 				879F5F0C28C27CA200CA7F79 /* HeroModel.swift in Sources */,
 				879F5EEC28C26C9F00CA7F79 /* WelcomeViewController.swift in Sources */,
 				879F5EF928C26E1800CA7F79 /* LoginViewModel.swift in Sources */,
+				873C2E5828CB50D000D41C6E /* RegexHelper.swift in Sources */,
 				879F5F6C28C3380B00CA7F79 /* KeychainManager.swift in Sources */,
 				879F5F0D28C27CA200CA7F79 /* LocalDataModel.swift in Sources */,
 				879F5F0628C274A900CA7F79 /* MapViewController.swift in Sources */,
@@ -493,6 +500,7 @@
 				879F5F0F28C27CC300CA7F79 /* TransformationModel.swift in Sources */,
 				879F5EAD28C262FF00CA7F79 /* IOSAvanzadoDragonBall.xcdatamodeld in Sources */,
 				879F5F0928C27C7300CA7F79 /* NetworkHelper.swift in Sources */,
+				873C2E5628CB3B7300D41C6E /* CoreDataManager.swift in Sources */,
 				879F5F0528C274A900CA7F79 /* MapViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

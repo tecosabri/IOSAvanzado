@@ -8,21 +8,24 @@ import UIKit
 import MapKit
 
 protocol MapViewControllerProtocol: AnyObject {
-    
+    func setUpLocation()
 }
 
 class MapViewController: UIViewController {
     
-    // MARK: - IBOutlets
-    @IBOutlet var mapView: MKMapView!
+    // MARK: - Constants
+    private let locationManager = CLLocationManager()
     
     // MARK: - Variables
     // MVC properties
     var viewModel: MapViewModelProtocol?
+    // MARK: - IBOutlets
+    @IBOutlet var mapView: MKMapView!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapView.showsUserLocation = true
     }
 
     func setViewModel(withToken token: String?) {
@@ -33,9 +36,22 @@ class MapViewController: UIViewController {
         super.viewWillAppear(animated)
         viewModel?.onViewWillAppear()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        viewModel?.onViewDidAppear()
+    }
 }
 
 // MARK: - MapViewControllerProtocol extension
-extension MapViewController: MapViewControllerProtocol {
-    
+extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegate {
+    func setUpLocation() {
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        mapView.showsUserLocation = true
+        guard let userLocation = locationManager.location else {return}
+        mapView.centerTo(location: userLocation)
+    }
 }
+
+

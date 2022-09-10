@@ -32,6 +32,7 @@
 		879F5F0D28C27CA200CA7F79 /* LocalDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5F0B28C27CA200CA7F79 /* LocalDataModel.swift */; };
 		879F5F0F28C27CC300CA7F79 /* TransformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5F0E28C27CC300CA7F79 /* TransformationModel.swift */; };
 		879F5F6C28C3380B00CA7F79 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5F6B28C3380B00CA7F79 /* KeychainManager.swift */; };
+		87E2E90128CD466E000C44A0 /* MKMapViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E2E90028CD466E000C44A0 /* MKMapViewExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		879F5F0B28C27CA200CA7F79 /* LocalDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalDataModel.swift; sourceTree = "<group>"; };
 		879F5F0E28C27CC300CA7F79 /* TransformationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformationModel.swift; sourceTree = "<group>"; };
 		879F5F6B28C3380B00CA7F79 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		87E2E90028CD466E000C44A0 /* MKMapViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKMapViewExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				873C2E5328C90EBE00D41C6E /* UIViewControllerExtension.swift */,
+				87E2E90028CD466E000C44A0 /* MKMapViewExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -494,6 +497,7 @@
 				873C2E5828CB50D000D41C6E /* RegexHelper.swift in Sources */,
 				879F5F6C28C3380B00CA7F79 /* KeychainManager.swift in Sources */,
 				879F5F0D28C27CA200CA7F79 /* LocalDataModel.swift in Sources */,
+				87E2E90128CD466E000C44A0 /* MKMapViewExtension.swift in Sources */,
 				879F5F0628C274A900CA7F79 /* MapViewController.swift in Sources */,
 				879F5EEB28C26C9F00CA7F79 /* WelcomeViewModel.swift in Sources */,
 				879F5EA528C262FF00CA7F79 /* SceneDelegate.swift in Sources */,
@@ -675,6 +679,10 @@
 				DEVELOPMENT_TEAM = 94HWZ76SXD;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = IOSAvanzadoDragonBall/App/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app uses Localization for better performance";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "This app uses Localization for better performance";
+				INFOPLIST_KEY_NSLocationUsageDescription = "This app uses Localization for better performance";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app uses Localization for better performance";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -703,6 +711,10 @@
 				DEVELOPMENT_TEAM = 94HWZ76SXD;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = IOSAvanzadoDragonBall/App/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app uses Localization for better performance";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "This app uses Localization for better performance";
+				INFOPLIST_KEY_NSLocationUsageDescription = "This app uses Localization for better performance";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app uses Localization for better performance";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

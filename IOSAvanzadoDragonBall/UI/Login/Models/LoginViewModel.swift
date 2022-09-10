@@ -25,10 +25,12 @@ protocol LoginViewModelProtocol: AnyObject {
     
     class LoginViewModel {
         
-        // MARK: - Private properties
+        // MARK: - Constants
+        private let networkHelper = NetworkHelper()
+        
+        // MARK: - Variables
         // MVC properties
         private weak var viewDelegate: LoginViewControllerProtocol?
-        private let networkHelper = NetworkHelper()
         
         // MARK: - Lifecycle
         init(viewDelegate: LoginViewControllerProtocol) {

@@ -5,9 +5,12 @@
 //  Copyright (c) 2022 Ismael Sabri. All rights reserved.
 //
 import Foundation
+import CoreLocation
+
 
 protocol MapViewModelProtocol: AnyObject {
     func onViewWillAppear()
+    func onViewDidAppear()
 }
 
 class MapViewModel {
@@ -39,4 +42,9 @@ extension MapViewModel: MapViewModelProtocol {
             heroes.forEach { self.coreDataManager.create(hero: $0)}
         }
     }
+    
+    func onViewDidAppear() {
+        viewDelegate?.setUpLocation()
+    }
 }
+

@@ -9,6 +9,7 @@ import MapKit
 
 protocol MapViewControllerProtocol: AnyObject {
     func setUpLocation()
+    func centerTo(location: CLLocation)
 }
 
 class MapViewController: UIViewController {
@@ -51,6 +52,10 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
         mapView.showsUserLocation = true
         guard let userLocation = locationManager.location else {return}
         mapView.centerTo(location: userLocation)
+    }
+    
+    func centerTo(location: CLLocation) {
+        mapView.centerTo(location: location)
     }
 }
 

@@ -10,6 +10,7 @@
 		873C2E5428C90EBE00D41C6E /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873C2E5328C90EBE00D41C6E /* UIViewControllerExtension.swift */; };
 		873C2E5628CB3B7300D41C6E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873C2E5528CB3B7300D41C6E /* CoreDataManager.swift */; };
 		873C2E5828CB50D000D41C6E /* RegexHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873C2E5728CB50D000D41C6E /* RegexHelper.swift */; };
+		878BB56428CDB4D300D39298 /* LocalizationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878BB56328CDB4D300D39298 /* LocalizationModel.swift */; };
 		879F5EA328C262FF00CA7F79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5EA228C262FF00CA7F79 /* AppDelegate.swift */; };
 		879F5EA528C262FF00CA7F79 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879F5EA428C262FF00CA7F79 /* SceneDelegate.swift */; };
 		879F5EAD28C262FF00CA7F79 /* IOSAvanzadoDragonBall.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 879F5EAB28C262FF00CA7F79 /* IOSAvanzadoDragonBall.xcdatamodeld */; };
@@ -56,6 +57,7 @@
 		873C2E5328C90EBE00D41C6E /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		873C2E5528CB3B7300D41C6E /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		873C2E5728CB50D000D41C6E /* RegexHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegexHelper.swift; sourceTree = "<group>"; };
+		878BB56328CDB4D300D39298 /* LocalizationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationModel.swift; sourceTree = "<group>"; };
 		879F5E9F28C262FF00CA7F79 /* IOSAvanzadoDragonBall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IOSAvanzadoDragonBall.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		879F5EA228C262FF00CA7F79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		879F5EA428C262FF00CA7F79 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 			children = (
 				879F5F0E28C27CC300CA7F79 /* TransformationModel.swift */,
 				879F5F0A28C27CA200CA7F79 /* HeroModel.swift */,
+				878BB56328CDB4D300D39298 /* LocalizationModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -502,6 +505,7 @@
 				879F5EEB28C26C9F00CA7F79 /* WelcomeViewModel.swift in Sources */,
 				879F5EA528C262FF00CA7F79 /* SceneDelegate.swift in Sources */,
 				879F5F0F28C27CC300CA7F79 /* TransformationModel.swift in Sources */,
+				878BB56428CDB4D300D39298 /* LocalizationModel.swift in Sources */,
 				879F5EAD28C262FF00CA7F79 /* IOSAvanzadoDragonBall.xcdatamodeld in Sources */,
 				879F5F0928C27C7300CA7F79 /* NetworkHelper.swift in Sources */,
 				873C2E5628CB3B7300D41C6E /* CoreDataManager.swift in Sources */,

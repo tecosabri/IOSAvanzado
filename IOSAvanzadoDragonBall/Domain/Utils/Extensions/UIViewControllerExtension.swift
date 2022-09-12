@@ -18,7 +18,7 @@ extension UIViewController {
     
     func showYesNoAlert(withTitle title: String, andMessage message: String, complete:@escaping (Bool) -> Void) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let alertActionYes = UIAlertAction(title: "Sí", style: .default) { _ in
+        let alertActionYes = UIAlertAction(title: "Yes", style: .default) { _ in
             complete(true)
         }
         let alertActionNo = UIAlertAction(title: "No", style: .default) { _ in

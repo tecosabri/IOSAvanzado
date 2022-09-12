@@ -35,11 +35,27 @@ class MapViewModel {
 // MARK: - MapViewModelProtocol extension
 extension MapViewModel: MapViewModelProtocol {
     func onViewWillAppear() {
-        saveHeroesToCoreData()
+        saveHeroesAndTheirLocationsToCoreData()
     }
-    private func saveHeroesToCoreData() {
+    private func saveHeroesAndTheirLocationsToCoreData() {
         networkHelper.getHeroes { heroes, _ in
-            heroes.forEach { self.coreDataManager.create(hero: $0)}
+            heroes.forEach {
+                let hero = self.coreDataManager.create(hero: $0)
+                // For each hero, get his locations and add it to coredata
+                self.networkHelper.getLocations(id: $0.id) { locations, error in
+                    for location in locations {
+                        let context = self.coreDataManager.container.viewContext
+                        let cdLocation = self.coreDataManager.create(location: location)
+                        hero.addToLocations(cdLocation)
+                        cdLocation.addToHeroe(hero)
+                        do {
+                            try context.save()
+                        } catch {
+                            print("Unable to save location")
+                        }
+                    }
+                }
+            }
         }
     }
     

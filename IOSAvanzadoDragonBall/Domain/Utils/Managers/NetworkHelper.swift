@@ -178,7 +178,57 @@ final class NetworkHelper {
       task.resume()
     }
     
-    
+    func getLocations(id: String, completion: @escaping ([Location], NetworkError?) -> Void) {
+      guard let url = URL(string: "\(server)/api/heros/locations") else {
+        completion([], .malformedURL)
+        return
+      }
+      
+      guard let token = self.token else {
+        completion([], .other)
+        return
+      }
+
+      var urlRequest = URLRequest(url: url)
+      urlRequest.httpMethod = "POST"
+      urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+      urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+      
+      struct Body: Encodable {
+        let id: String
+      }
+      
+      let body = Body(id: id)
+      
+      urlRequest.httpBody = try? JSONEncoder().encode(body)
+      
+      let task = session.dataTask(with: urlRequest) { data, response, error in
+        guard error == nil else {
+          completion([], .other)
+          return
+        }
+        
+        guard let data = data else {
+          completion([], .noData)
+          return
+        }
+        
+        guard let httpResponse = (response as? HTTPURLResponse),
+              httpResponse.statusCode == 200 else {
+          completion([], .errorCode((response as? HTTPURLResponse)?.statusCode))
+          return
+        }
+        
+        guard let locationResponse = try? JSONDecoder().decode([Location].self, from: data) else {
+          completion([], .decoding)
+          return
+        }
+        
+        completion(locationResponse, nil)
+      }
+      
+      task.resume()
+    }
     
 }
 

@@ -96,6 +96,7 @@ final class CoreDataManager {
             for managedObject in results {
                 if let managedObjectData: NSManagedObject = managedObject as? NSManagedObject {
                     context.delete(managedObjectData)
+                    print("Deleted element from \(element) entity")
                 }
             }
         } catch let error as NSError {

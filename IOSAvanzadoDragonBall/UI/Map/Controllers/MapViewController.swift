@@ -10,6 +10,7 @@ import MapKit
 protocol MapViewControllerProtocol: AnyObject {
     func setUpLocation()
     func centerTo(location: CLLocation)
+    func pinPoint(annotation: MKPointAnnotation)
 }
 
 class MapViewController: UIViewController {
@@ -26,7 +27,6 @@ class MapViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        mapView.showsUserLocation = true
     }
 
     func setViewModel(withToken token: String?) {
@@ -36,11 +36,9 @@ class MapViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel?.onViewWillAppear()
+        print("Viewwillappear")
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        viewModel?.onViewDidAppear()
-    }
+
 }
 
 // MARK: - MapViewControllerProtocol extension
@@ -56,6 +54,12 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
     
     func centerTo(location: CLLocation) {
         mapView.centerTo(location: location)
+    }
+    
+    func pinPoint(annotation: MKPointAnnotation) {
+        DispatchQueue.main.async {
+            self.mapView.addAnnotation(annotation)
+        }
     }
 }
 

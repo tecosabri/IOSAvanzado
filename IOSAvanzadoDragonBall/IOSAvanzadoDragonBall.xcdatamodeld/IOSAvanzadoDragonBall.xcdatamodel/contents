@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21277" systemVersion="21G83" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CDLocation" representedClassName="CDLocation" syncable="YES" codeGenerationType="class">
+        <attribute name="dateShow" optional="YES" attributeType="String"/>
+        <attribute name="heroId" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="latitud" optional="YES" attributeType="String"/>
+        <attribute name="longitud" optional="YES" attributeType="String"/>
+        <relationship name="heroe" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Heroe" inverseName="locations" inverseEntity="Heroe"/>
+    </entity>
+    <entity name="Heroe" representedClassName="Heroe" syncable="YES" codeGenerationType="class">
+        <attribute name="favorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="photo" optional="YES" attributeType="String"/>
+        <relationship name="locations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDLocation" inverseName="heroe" inverseEntity="CDLocation"/>
+    </entity>
 </model>

@@ -5,31 +5,62 @@
 //  Copyright (c) 2022 Ismael Sabri. All rights reserved.
 //
 import UIKit
+import MapKit
 
 protocol MapViewControllerProtocol: AnyObject {
-    
+    func setUpLocation()
+    func centerTo(location: CLLocation)
+    func pinPoint(annotation: MKPointAnnotation)
 }
 
 class MapViewController: UIViewController {
     
-    // MARK: - IBOutlets
+    // MARK: - Constants
+    private let locationManager = CLLocationManager()
     
-    // MARK: - Public properties
+    // MARK: - Variables
     // MVC properties
     var viewModel: MapViewModelProtocol?
+    // MARK: - IBOutlets
+    @IBOutlet var mapView: MKMapView!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setViewModel()
     }
-    
-    private func setViewModel() {
-        self.viewModel = MapViewModel(viewDelegate: self)
+
+    func setViewModel(withToken token: String?) {
+        self.viewModel = MapViewModel(viewDelegate: self, withToken: token)
     }
+ 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel?.onViewWillAppear()
+        print("Viewwillappear")
+    }
+
 }
 
 // MARK: - MapViewControllerProtocol extension
-extension MapViewController: MapViewControllerProtocol {
+extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegate {
+    func setUpLocation() {
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        mapView.showsUserLocation = true
+        guard let userLocation = locationManager.location else {return}
+        mapView.centerTo(location: userLocation)
+    }
     
+    func centerTo(location: CLLocation) {
+        mapView.centerTo(location: location)
+    }
+    
+    func pinPoint(annotation: MKPointAnnotation) {
+        DispatchQueue.main.async {
+            self.mapView.addAnnotation(annotation)
+        }
+    }
 }
+
+

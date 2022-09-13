@@ -14,7 +14,7 @@ protocol LoginViewControllerProtocol: AnyObject {
     func showUserErrorAlert(withMessage message: String)
     func showDecideToSave(password: String, forUser user: String, withTitle title: String)
     func showDecideToAutocomplete(withTitle title: String, andUser user: String)
-    func navigateToMap()
+    func navigateToMap(withToken token: String?)
     func focusUserTextField()
     func focusPasswordTextField()
     func enableEnterButton()
@@ -83,7 +83,6 @@ class LoginViewController: UIViewController {
         viewModel?.onPasswordTextFieldReturnKey(whenEnterButtonIsEnabledIs: enterButtonIsEnabled)
     }
     
-    
     @IBAction func onUserTextFieldEndEdit(_ sender: Any) {
         guard let user = userTextField.text else {return}
         viewModel?.onUserTextFieldReturnKey(withUser: user)
@@ -130,8 +129,10 @@ extension LoginViewController: LoginViewControllerProtocol {
         }
     }
     
-    func navigateToMap() {
-        navigationController?.pushViewController(MapViewController(nibName: "MapView", bundle: nil), animated: true)
+    func navigateToMap(withToken token: String?) {
+        let mapViewController = MapViewController(nibName: "MapView", bundle: nil)
+        mapViewController.setViewModel(withToken: token)
+        navigationController?.pushViewController(mapViewController, animated: true)
     }
     
     func showUserErrorAlert(withMessage message: String) {

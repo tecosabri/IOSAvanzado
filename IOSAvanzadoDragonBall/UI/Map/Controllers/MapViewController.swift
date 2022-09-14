@@ -12,6 +12,8 @@ protocol MapViewControllerProtocol: AnyObject {
     func centerTo(location: CLLocation)
     func pinPoint(annotation: MKPointAnnotation)
     func switchLoadingHerosLabel()
+    func setSearchBar()
+    func deleteAnnotations()
 }
 
 class MapViewController: UIViewController {
@@ -38,7 +40,6 @@ class MapViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel?.onViewWillAppear()
-        print("Viewwillappear")
     }
 
 }
@@ -71,6 +72,29 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
         case false:
             loadingHerosLabel.isHidden = true
         }
+    }
+    
+    func deleteAnnotations() {
+        mapView.removeAnnotations(mapView.annotations)
+    }
+}
+
+// MARK: - SearchBar extension
+extension MapViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        viewModel?.onUpdateSearchResults(for: searchController)
+    }
+    
+    func setSearchBar() {
+        let searchController = UISearchController()
+        searchController.searchResultsUpdater = self
+        // Set up search bar
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.placeholder = "Search your hero!"
+        searchController.searchBar.setValue("Cancel", forKey: "cancelButtonText")
+
+        navigationItem.searchController = searchController
     }
 }
 

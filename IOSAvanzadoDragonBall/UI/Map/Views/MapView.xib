@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="za5-Iv-UFj">
-                    <rect key="frame" x="0.0" y="48" width="414" height="814"/>
+                    <rect key="frame" x="0.0" y="48" width="414" height="848"/>
                     <standardMapConfiguration key="preferredConfiguration"/>
                 </mapView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading heroes!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uIR-RA-NpX">
@@ -40,7 +40,7 @@
                 <constraint firstItem="za5-Iv-UFj" firstAttribute="top" secondItem="3XQ-H1-Fdg" secondAttribute="top" id="CAs-Lo-zA7"/>
                 <constraint firstItem="3XQ-H1-Fdg" firstAttribute="trailing" secondItem="za5-Iv-UFj" secondAttribute="trailing" id="E17-2e-RNn"/>
                 <constraint firstItem="uIR-RA-NpX" firstAttribute="top" secondItem="3XQ-H1-Fdg" secondAttribute="top" constant="30" id="w37-3e-jj3"/>
-                <constraint firstItem="3XQ-H1-Fdg" firstAttribute="bottom" secondItem="za5-Iv-UFj" secondAttribute="bottom" id="yMA-UC-f7T"/>
+                <constraint firstAttribute="bottom" secondItem="za5-Iv-UFj" secondAttribute="bottom" id="yMA-UC-f7T"/>
             </constraints>
             <point key="canvasLocation" x="-1049" y="-465"/>
         </view>

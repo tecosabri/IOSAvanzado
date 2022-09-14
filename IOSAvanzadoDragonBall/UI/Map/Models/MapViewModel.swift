@@ -11,6 +11,7 @@ import MapKit
 
 protocol MapViewModelProtocol: AnyObject {
     func onViewWillAppear()
+    func onUpdateSearchResults(for searchController: UISearchController)
 }
 
 class MapViewModel {
@@ -43,9 +44,10 @@ class MapViewModel {
 extension MapViewModel: MapViewModelProtocol {
     func onViewWillAppear() {
         // Set location to user location
-        self.viewDelegate?.setUpLocation()
+        viewDelegate?.setUpLocation()
+        // Set search bar
+        viewDelegate?.setSearchBar()
         // Get heroes their locations and annotations. Each time a hero is saved, pin his annotation on the map
-        
         self.getHeroes { hero in
             self.getLocations(forHero: hero) { annotation in
                 self.add(annotation: annotation)
@@ -56,7 +58,6 @@ extension MapViewModel: MapViewModelProtocol {
         }
         deleteCoredata() // TODO: Deleting elements, provisionnally
     }
-    
     private func getHeroes(completion: @escaping FinishedHeroFetching) {
         dispatchGroup.enter()
         guard heroes.count == 0 else {return}
@@ -85,16 +86,20 @@ extension MapViewModel: MapViewModelProtocol {
                     // Add location to array
                     self.locations.append(location)
                     // Add annotation
-                    let annotation = MKPointAnnotation()
-                    annotation.title = name
-                    guard let latitude = Double(location.latitud ?? "") else {return}
-                    guard let longitude = Double(location.longitud ?? "") else {return}
-                    annotation.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                    guard let annotation = self.getAnnotation(forLocation: location, withTitle: name) else {return}
                     completion(annotation)
                 }
             self.dispatchGroup.leave()
             }
         
+    }
+    private func getAnnotation(forLocation location: CDLocation, withTitle title: String) -> MKPointAnnotation? {
+        let annotation = MKPointAnnotation()
+        annotation.title = title
+        guard let latitude = Double(location.latitud ?? "") else {return nil}
+        guard let longitude = Double(location.longitud ?? "") else {return nil}
+        annotation.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        return annotation
     }
     private func add(annotation: MKPointAnnotation) {
         annotations.append(annotation)
@@ -105,6 +110,35 @@ extension MapViewModel: MapViewModelProtocol {
     private func deleteCoredata() {
         coreDataManager.deleteCoreData(element: "Heroe")
         coreDataManager.deleteCoreData(element: "CDLocation")
+    }
+    
+    func onUpdateSearchResults(for searchController: UISearchController) {
+        guard let search = searchController.searchBar.text,
+              !search.isEmpty
+        else {
+            addAllExistentHeroesAndLocations()
+            return
+        }
+        // Delete map annotations
+        viewDelegate?.deleteAnnotations()
+        // Add filtered annotations
+        for hero in heroes where hero.name!.localizedCaseInsensitiveContains(search) {
+            guard let name = hero.name else {return}
+            for location in locations where location.heroId == hero.id {
+                guard let annotation = getAnnotation(forLocation: location, withTitle: name) else {return}
+                add(annotation: annotation)
+            }
+        }
+    }
+    private func addAllExistentHeroesAndLocations() {
+        viewDelegate?.deleteAnnotations()
+        for hero in heroes {
+            guard let name = hero.name else {return}
+            for location in locations where location.heroId == hero.id {
+                guard let annotation = getAnnotation(forLocation: location, withTitle: name) else {return}
+                add(annotation: annotation)
+            }
+        }
     }
 }
 

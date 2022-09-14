@@ -11,6 +11,7 @@ protocol MapViewControllerProtocol: AnyObject {
     func setUpLocation()
     func centerTo(location: CLLocation)
     func pinPoint(annotation: MKPointAnnotation)
+    func switchLoadingHerosLabel()
 }
 
 class MapViewController: UIViewController {
@@ -23,6 +24,7 @@ class MapViewController: UIViewController {
     var viewModel: MapViewModelProtocol?
     // MARK: - IBOutlets
     @IBOutlet var mapView: MKMapView!
+    @IBOutlet weak var loadingHerosLabel: UILabel!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -59,6 +61,15 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
     func pinPoint(annotation: MKPointAnnotation) {
         DispatchQueue.main.async {
             self.mapView.addAnnotation(annotation)
+        }
+    }
+    
+    func switchLoadingHerosLabel() {
+        switch loadingHerosLabel.isHidden {
+        case true:
+            loadingHerosLabel.isHidden = false
+        case false:
+            loadingHerosLabel.isHidden = true
         }
     }
 }

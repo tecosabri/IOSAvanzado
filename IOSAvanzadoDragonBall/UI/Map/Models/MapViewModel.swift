@@ -29,6 +29,7 @@ class MapViewModel {
     private var heroes: [Heroe] = []
     private var locations: [CDLocation] = []
     private var annotations: [MKPointAnnotation] = []
+    private let dispatchGroup = DispatchGroup()
     
     // MARK: - Lifecycle
     init(viewDelegate: MapViewControllerProtocol, withToken token: String?) {
@@ -44,15 +45,20 @@ extension MapViewModel: MapViewModelProtocol {
         // Set location to user location
         self.viewDelegate?.setUpLocation()
         // Get heroes their locations and annotations. Each time a hero is saved, pin his annotation on the map
+        
         self.getHeroes { hero in
             self.getLocations(forHero: hero) { annotation in
                 self.add(annotation: annotation)
             }
         }
-        deleteCoredata()
+        dispatchGroup.notify(queue: .main) {
+            self.viewDelegate?.switchLoadingHerosLabel()
+        }
+        deleteCoredata() // TODO: Deleting elements, provisionnally
     }
     
     private func getHeroes(completion: @escaping FinishedHeroFetching) {
+        dispatchGroup.enter()
         guard heroes.count == 0 else {return}
         networkHelper.getHeroes { heroes, _ in
             heroes.forEach {
@@ -63,9 +69,11 @@ extension MapViewModel: MapViewModelProtocol {
                 // Add locations
                 completion(hero)
             }
+            self.dispatchGroup.leave()
         }
     }
     private func getLocations(forHero hero: Heroe, completion: @escaping FinishedLocationsFetching) {
+        dispatchGroup.enter()
         guard let id = hero.id,
               let name = hero.name
         else {return}
@@ -84,6 +92,7 @@ extension MapViewModel: MapViewModelProtocol {
                     annotation.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
                     completion(annotation)
                 }
+            self.dispatchGroup.leave()
             }
         
     }

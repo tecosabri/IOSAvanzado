@@ -14,8 +14,8 @@
             filePath = "IOSAvanzadoDragonBall/UI/Map/Models/MapViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
             landmarkName = "getHeroes(completion:)"
             landmarkType = "7">
          </BreakpointContent>

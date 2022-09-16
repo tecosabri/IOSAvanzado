@@ -17,28 +17,19 @@ final class CoreDataManager {
         container = appDelegate.persistentContainer
     }
     
-    func create(hero: Hero, completion: (() -> Void)? = nil) -> Heroe {
+    func save() {
         let context = container.viewContext
-        
-        let coreDataHero = Heroe(context: context)
-        
-        coreDataHero.id = hero.id
-        coreDataHero.name = hero.name
-        coreDataHero.photo = hero.photo.absoluteString
-        coreDataHero.favorite = hero.favorite
-        
         do {
             try context.save()
-            print("\(hero.name) was saved successfully into core data")
         } catch {
-            print("Error while saving \(hero.name)")
+            print("Error while saving context")
         }
-        
-        return coreDataHero
     }
     
-    func fetchHeros(withPredicate predicate: NSPredicate? = nil) -> [Heroe]{
-        let fetchRequest: NSFetchRequest<Heroe> = Heroe.fetchRequest()
+    func fetchObjects<T: NSManagedObject>(withPredicate predicate: NSPredicate? = nil) -> [T]{
+        guard let fetchRequest = T.fetchRequest() as? NSFetchRequest<T> else {
+            fatalError("Error while creating the fetch request for \(T.self)")
+        }
         if let predicate = predicate {
             fetchRequest.predicate = predicate
         }
@@ -47,41 +38,6 @@ final class CoreDataManager {
             return result
         } catch {
             print("Error while fetching heroes")
-        }
-        return []
-    }
-    
-    func create(location: Location, completion: (() -> Void)? = nil) -> CDLocation {
-        let context = container.viewContext
-        
-        let coreDataLocation = CDLocation(context: context)
-        
-        coreDataLocation.id = location.id
-        coreDataLocation.dateShow = location.dateShow
-        coreDataLocation.heroId = location.hero.id
-        coreDataLocation.longitud = location.longitud
-        coreDataLocation.latitud = location.latitud
-        
-        do {
-            try context.save()
-            print("Location \(location.id) was saved successfully into core data")
-        } catch {
-            print("Error while saving location \(location.id)")
-        }
-        
-        return coreDataLocation
-    }
-    
-    func fetchLocations(withPredicate predicate: NSPredicate? = nil) -> [CDLocation] {
-        let fetchRequest: NSFetchRequest<CDLocation> = CDLocation.fetchRequest()
-        if let predicate = predicate {
-            fetchRequest.predicate = predicate
-        }
-        do{
-            let result = try container.viewContext.fetch(fetchRequest)
-            return result
-        } catch {
-            print("Error while fetching locations")
         }
         return []
     }

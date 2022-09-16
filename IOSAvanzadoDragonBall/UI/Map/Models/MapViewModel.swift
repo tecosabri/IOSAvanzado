@@ -19,7 +19,7 @@ class MapViewModel {
     // Mark: - Constants
     private let coreDataManager = CoreDataManager()
     private let networkHelper: NetworkHelper
-    typealias FinishedHeroFetching = (Heroe) -> ()
+    typealias FinishedHeroFetching = (Hero) -> ()
     typealias FinishedLocationsFetching = (MKPointAnnotation) -> ()
 
     
@@ -27,8 +27,8 @@ class MapViewModel {
     // MVC properties
     private weak var viewDelegate: MapViewControllerProtocol?
     // Other properties
-    private var heroes: [Heroe] = []
-    private var locations: [CDLocation] = []
+    private var heroes: [Hero] = []
+    private var locations: [Location] = []
     private var annotations: [MKPointAnnotation] = []
     private let dispatchGroup = DispatchGroup()
     
@@ -63,17 +63,15 @@ extension MapViewModel: MapViewModelProtocol {
         guard heroes.count == 0 else {return}
         networkHelper.getHeroes { heroes, _ in
             heroes.forEach {
-                // Add hero to coredata
-                let hero = self.coreDataManager.create(hero: $0)
                 // Add hero to array
-                self.heroes.append(hero)
+                self.heroes.append($0)
                 // Add locations
-                completion(hero)
+                completion($0)
             }
             self.dispatchGroup.leave()
         }
     }
-    private func getLocations(forHero hero: Heroe, completion: @escaping FinishedLocationsFetching) {
+    private func getLocations(forHero hero: Hero, completion: @escaping FinishedLocationsFetching) {
         dispatchGroup.enter()
         guard let id = hero.id,
               let name = hero.name
@@ -81,23 +79,21 @@ extension MapViewModel: MapViewModelProtocol {
 
         networkHelper.getLocations(id: id) { locationModels, error in
                 locationModels.forEach {
-                    // Add location to coredata
-                    let location = self.coreDataManager.create(location: $0)
                     // Add location to array
-                    self.locations.append(location)
+                    self.locations.append($0)
                     // Add annotation
-                    guard let annotation = self.getAnnotation(forLocation: location, withTitle: name) else {return}
+                    guard let annotation = self.getAnnotation(forLocation: $0, withTitle: name) else {return}
                     completion(annotation)
                 }
             self.dispatchGroup.leave()
             }
         
     }
-    private func getAnnotation(forLocation location: CDLocation, withTitle title: String) -> MKPointAnnotation? {
+    private func getAnnotation(forLocation location: Location, withTitle title: String) -> MKPointAnnotation? {
         let annotation = MKPointAnnotation()
         annotation.title = title
-        guard let latitude = Double(location.latitud ?? "") else {return nil}
-        guard let longitude = Double(location.longitud ?? "") else {return nil}
+        guard let latitude = Double(location.latitude ?? "") else {return nil}
+        guard let longitude = Double(location.longitude ?? "") else {return nil}
         annotation.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         return annotation
     }
@@ -108,8 +104,8 @@ extension MapViewModel: MapViewModelProtocol {
     }
 
     private func deleteCoredata() {
-        coreDataManager.deleteCoreData(element: "Heroe")
-        coreDataManager.deleteCoreData(element: "CDLocation")
+        coreDataManager.deleteCoreData(element: "Hero")
+        coreDataManager.deleteCoreData(element: "Location")
     }
     
     func onUpdateSearchResults(for searchController: UISearchController) {
@@ -124,7 +120,7 @@ extension MapViewModel: MapViewModelProtocol {
         // Add filtered annotations
         for hero in heroes where hero.name!.localizedCaseInsensitiveContains(search) {
             guard let name = hero.name else {return}
-            for location in locations where location.heroId == hero.id {
+            for location in locations where location.heroId?.id == hero.id {
                 guard let annotation = getAnnotation(forLocation: location, withTitle: name) else {return}
                 add(annotation: annotation)
             }
@@ -134,7 +130,7 @@ extension MapViewModel: MapViewModelProtocol {
         viewDelegate?.deleteAnnotations()
         for hero in heroes {
             guard let name = hero.name else {return}
-            for location in locations where location.heroId == hero.id {
+            for location in locations where location.heroId?.id == hero.id {
                 guard let annotation = getAnnotation(forLocation: location, withTitle: name) else {return}
                 add(annotation: annotation)
             }

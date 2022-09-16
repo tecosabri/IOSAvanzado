@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21277" systemVersion="21G83" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="CDLocation" representedClassName="CDLocation" syncable="YES" codeGenerationType="class">
-        <attribute name="dateShow" optional="YES" attributeType="String"/>
-        <attribute name="heroId" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="String"/>
-        <attribute name="latitud" optional="YES" attributeType="String"/>
-        <attribute name="longitud" optional="YES" attributeType="String"/>
-        <relationship name="heroe" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Heroe" inverseName="locations" inverseEntity="Heroe"/>
-    </entity>
-    <entity name="Heroe" representedClassName="Heroe" syncable="YES" codeGenerationType="class">
+    <entity name="Hero" representedClassName=".Hero" syncable="YES">
+        <attribute name="descript" optional="YES" attributeType="String"/>
         <attribute name="favorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="photo" optional="YES" attributeType="String"/>
-        <relationship name="locations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDLocation" inverseName="heroe" inverseEntity="CDLocation"/>
+        <relationship name="locations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Location" inverseName="hero" inverseEntity="Location"/>
+    </entity>
+    <entity name="Location" representedClassName=".Location" syncable="YES">
+        <attribute name="dateShow" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="latitude" optional="YES" attributeType="String"/>
+        <attribute name="longitude" optional="YES" attributeType="String"/>
+        <relationship name="hero" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Hero" inverseName="locations" inverseEntity="Hero"/>
     </entity>
 </model>

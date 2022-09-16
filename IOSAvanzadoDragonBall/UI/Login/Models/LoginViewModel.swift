@@ -71,8 +71,24 @@ protocol LoginViewModelProtocol: AnyObject {
         private func check(error: NetworkError?) {
             guard error == nil else {
                 DispatchQueue.main.async {
+                    // Stop activity indicator
                     self.viewDelegate?.switchActivityIndicator()
-                    self.viewDelegate?.showLoginErrorAlert(withMessage: "Incorrect password")
+                    // Manage errors
+                    switch error {
+                    case .other, .malformedURL, .tokenFormat, .decoding:
+                        self.viewDelegate?.showLoginErrorAlert(withMessage: "An error occurred while login")
+                    case .noData, .errorCode(401):
+                        self.viewDelegate?.showLoginErrorAlert(withMessage: "Incorrect usermail or password")
+                        return
+                    case .errorCode(let code):
+                        guard let code = code else {
+                            self.viewDelegate?.showLoginErrorAlert(withMessage: "An error occurred while login")
+                            return
+                        }
+                        self.viewDelegate?.showLoginErrorAlert(withMessage: "HTTP Error \(code)")
+                    case .none:
+                        return
+                    }
                 }
                 return
             }

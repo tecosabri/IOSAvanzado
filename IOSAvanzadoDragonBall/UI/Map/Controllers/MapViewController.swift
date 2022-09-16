@@ -11,6 +11,9 @@ protocol MapViewControllerProtocol: AnyObject {
     func setUpLocation()
     func centerTo(location: CLLocation)
     func pinPoint(annotation: MKPointAnnotation)
+    func switchLoadingHerosLabel()
+    func setSearchBar()
+    func deleteAnnotations()
 }
 
 class MapViewController: UIViewController {
@@ -23,6 +26,7 @@ class MapViewController: UIViewController {
     var viewModel: MapViewModelProtocol?
     // MARK: - IBOutlets
     @IBOutlet var mapView: MKMapView!
+    @IBOutlet weak var loadingHerosLabel: UILabel!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -36,7 +40,6 @@ class MapViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel?.onViewWillAppear()
-        print("Viewwillappear")
     }
 
 }
@@ -60,6 +63,38 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
         DispatchQueue.main.async {
             self.mapView.addAnnotation(annotation)
         }
+    }
+    
+    func switchLoadingHerosLabel() {
+        switch loadingHerosLabel.isHidden {
+        case true:
+            loadingHerosLabel.isHidden = false
+        case false:
+            loadingHerosLabel.isHidden = true
+        }
+    }
+    
+    func deleteAnnotations() {
+        mapView.removeAnnotations(mapView.annotations)
+    }
+}
+
+// MARK: - SearchBar extension
+extension MapViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        viewModel?.onUpdateSearchResults(for: searchController)
+    }
+    
+    func setSearchBar() {
+        let searchController = UISearchController()
+        searchController.searchResultsUpdater = self
+        // Set up search bar
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.placeholder = "Search your hero!"
+        searchController.searchBar.setValue("Cancel", forKey: "cancelButtonText")
+
+        navigationItem.searchController = searchController
     }
 }
 

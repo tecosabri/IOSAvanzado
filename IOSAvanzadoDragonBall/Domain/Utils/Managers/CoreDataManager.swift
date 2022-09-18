@@ -15,32 +15,35 @@ final class CoreDataManager {
     init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         container = appDelegate.persistentContainer
+//        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy // Add to avoid duplicate entries when coredata saving by id on locations and heroes
     }
     
     func save() {
         let context = container.viewContext
         do {
-            try context.save()
-        } catch {
-            print("Error while saving context")
+            if context.hasChanges {
+                try context.save()
+            }
+        } catch let error{
+            print("Error while saving context: \(error.localizedDescription)")
         }
     }
     
-    func fetchObjects<T: NSManagedObject>(withPredicate predicate: NSPredicate? = nil) -> [T]{
-        guard let fetchRequest = T.fetchRequest() as? NSFetchRequest<T> else {
-            fatalError("Error while creating the fetch request for \(T.self)")
-        }
+    func fetchObjects<T: NSManagedObject>(withEntityType type: T.Type, withPredicate predicate: NSPredicate? = nil) -> [T] {
+        
+        let fetchRequest = NSFetchRequest<T>(entityName: String(describing: type.self))
         if let predicate = predicate {
             fetchRequest.predicate = predicate
         }
-        do{
-            let result = try container.viewContext.fetch(fetchRequest)
-            return result
-        } catch {
+        
+        guard let result = try? container.viewContext.fetch(fetchRequest) else {
             print("Error while fetching heroes")
+            return []
         }
-        return []
+        
+        return result
     }
+
     
     func deleteCoreData(element: String) {
         let context = container.viewContext

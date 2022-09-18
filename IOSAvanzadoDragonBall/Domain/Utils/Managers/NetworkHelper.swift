@@ -22,7 +22,7 @@ final class NetworkHelper {
     // MARK: - Properties
     let session: URLSession
     let server: String = "https://vapor2022.herokuapp.com"
-    let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let coreDataManager = CoreDataManager()
     var token: String?
     
     init(urlSession: URLSession = .shared, token: String? = nil) {
@@ -118,11 +118,12 @@ final class NetworkHelper {
             }
             
             // Get JSONDecoder with the appropriate context
-            let decoder = JSONDecoder(context: self.managedObjectContext)
+            let decoder = JSONDecoder(context: self.coreDataManager.container.viewContext)
             guard let heroesResponse = try? decoder.decode([Hero].self, from: data) else {
                 completion([], .decoding)
                 return
             }
+            self.coreDataManager.save()
             
             completion(heroesResponse, nil)
         }
@@ -172,11 +173,12 @@ final class NetworkHelper {
                 return
             }
             
-            let decoder = JSONDecoder(context: self.managedObjectContext)
+            let decoder = JSONDecoder(context: self.coreDataManager.container.viewContext)
             guard let transformationResponse = try? decoder.decode([Transformation].self, from: data) else {
                 completion([], .decoding)
                 return
             }
+            self.coreDataManager.save()
             
             completion(transformationResponse, nil)
         }
@@ -226,11 +228,12 @@ final class NetworkHelper {
             }
             
             // Get JSONDecoder with the appropriate context
-            let decoder = JSONDecoder(context: self.managedObjectContext)
+            let decoder = JSONDecoder(context: self.coreDataManager.container.viewContext)
             guard let locationResponse = try? decoder.decode([Location].self, from: data) else {
                 completion([], .decoding)
                 return
             }
+            self.coreDataManager.save()
             
             completion(locationResponse, nil)
         }

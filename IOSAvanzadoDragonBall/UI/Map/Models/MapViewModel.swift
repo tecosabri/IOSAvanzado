@@ -7,6 +7,7 @@
 import Foundation
 import CoreLocation
 import MapKit
+import CoreData
 
 
 protocol MapViewModelProtocol: AnyObject {
@@ -43,10 +44,10 @@ class MapViewModel {
 // MARK: - MapViewModelProtocol extension
 extension MapViewModel: MapViewModelProtocol {
     func onViewWillAppear() {
+
         // Set location to user location
-        viewDelegate?.setUpLocation()
-        // Set search bar
-        viewDelegate?.setSearchBar()
+        self.viewDelegate?.setUpLocation()
+        
         // Get heroes their locations and annotations. Each time a hero is saved, pin his annotation on the map
         self.getHeroes { hero in
             self.getLocations(forHero: hero) { annotation in
@@ -54,13 +55,20 @@ extension MapViewModel: MapViewModelProtocol {
             }
         }
         dispatchGroup.notify(queue: .main) {
+            // Set search bar
+            self.viewDelegate?.setSearchBar()
+            // Switch label, indicanting that heros and locations were succesfully loaded
             self.viewDelegate?.switchLoadingHerosLabel()
+            // FIXME: Mock printing
+            let heross: [Hero] = self.coreDataManager.fetchObjects(withEntityType: Hero.self) 
+            for hero in heross {
+                print("\(hero.name!) in array of \(heross.count) heros")
+            }
         }
-        deleteCoredata() // TODO: Deleting elements, provisionnally
+        
     }
     private func getHeroes(completion: @escaping FinishedHeroFetching) {
         dispatchGroup.enter()
-        guard heroes.count == 0 else {return}
         networkHelper.getHeroes { heroes, _ in
             heroes.forEach {
                 // Add hero to array
@@ -87,7 +95,6 @@ extension MapViewModel: MapViewModelProtocol {
                 }
             self.dispatchGroup.leave()
             }
-        
     }
     private func getAnnotation(forLocation location: Location, withTitle title: String) -> MKPointAnnotation? {
         let annotation = MKPointAnnotation()
@@ -100,7 +107,6 @@ extension MapViewModel: MapViewModelProtocol {
     private func add(annotation: MKPointAnnotation) {
         annotations.append(annotation)
         viewDelegate?.pinPoint(annotation: annotation)
-        print("Annotation \(annotation.description) has been added")
     }
 
     private func deleteCoredata() {

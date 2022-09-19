@@ -15,6 +15,7 @@
     </entity>
     <entity name="Location" representedClassName=".Location" syncable="YES">
         <attribute name="dateShow" optional="YES" attributeType="String"/>
+        <attribute name="heroId" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="latitude" optional="YES" attributeType="String"/>
         <attribute name="longitude" optional="YES" attributeType="String"/>

@@ -44,8 +44,7 @@ class MapViewModel {
 // MARK: - MapViewModelProtocol extension
 extension MapViewModel: MapViewModelProtocol {
     func onViewWillAppear() {
-        // FIXME: nO DELETE
-//        deleteCoredata()
+        
         // Set location to user location
         self.viewDelegate?.setUpLocation()
         
@@ -140,7 +139,7 @@ extension MapViewModel: MapViewModelProtocol {
         // Add filtered annotations
         for hero in heroes where hero.name!.localizedCaseInsensitiveContains(search) {
             guard let name = hero.name else {return}
-            for location in locations where location.hero?.id == hero.id {
+            for location in locations where location.heroId == hero.id {
                 guard let annotation = getAnnotation(forLocation: location, withTitle: name) else {return}
                 add(annotation: annotation)
             }
@@ -152,7 +151,7 @@ extension MapViewModel: MapViewModelProtocol {
         locations = coreDataManager.fetchObjects()
         for hero in heroes {
             guard let name = hero.name else {return}
-            for location in locations where location.hero?.id == hero.id {
+            for location in locations where location.heroId == hero.id {
                 guard let annotation = getAnnotation(forLocation: location, withTitle: name) else {return}
                 add(annotation: annotation)
             }

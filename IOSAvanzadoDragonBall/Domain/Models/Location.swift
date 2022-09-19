@@ -21,8 +21,7 @@ public class Location: NSManagedObject, Codable {
     @NSManaged var dateShow: String?
     @NSManaged public var id: String?
     @NSManaged public var hero: Hero?
-    // MARK: - Aux properties
-    public var heroId: HeroId? // This variable is going to store the encoded hero id
+    @NSManaged var heroId: String? // This variable is going to store the encoded hero id
     
     enum CodingKeys: CodingKey {
         case latitud, longitud, dateShow, id, hero
@@ -48,7 +47,8 @@ public class Location: NSManagedObject, Codable {
             self.dateShow = try container.decodeIfPresent(String.self, forKey: .dateShow)
             self.longitude = try container.decodeIfPresent(String.self, forKey: .longitud)
             self.latitude = try container.decodeIfPresent(String.self, forKey: .latitud)
-            self.heroId = try container.decodeIfPresent(HeroId.self, forKey: .hero)
+            guard let heroId: HeroId = try container.decodeIfPresent(HeroId.self, forKey: .hero) else {return}
+            self.heroId = heroId.id
         } catch let error {
             fatalError(error.localizedDescription)
         }

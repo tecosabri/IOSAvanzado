@@ -29,9 +29,9 @@ final class CoreDataManager {
         }
     }
     
-    func fetchObjects<T: NSManagedObject>(withEntityType type: T.Type, withPredicate predicate: NSPredicate? = nil) -> [T] {
+    func fetchObjects<T: NSManagedObject>(withPredicate predicate: NSPredicate? = nil) -> [T] {
         
-        let fetchRequest = NSFetchRequest<T>(entityName: String(describing: type.self))
+        let fetchRequest = NSFetchRequest<T>(entityName: String(describing: T.self))
         if let predicate = predicate {
             fetchRequest.predicate = predicate
         }

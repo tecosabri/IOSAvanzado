@@ -22,7 +22,7 @@ class MapViewModel {
     private let networkHelper: NetworkHelper
     typealias FinishedHeroFetching = (Hero) -> ()
     typealias FinishedLocationsFetching = (MKPointAnnotation) -> ()
-
+    
     
     // MARK: - Variables
     // MVC properties
@@ -38,32 +38,44 @@ class MapViewModel {
         self.viewDelegate = viewDelegate
         self.networkHelper = NetworkHelper(token: token)
     }
-
+    
 }
 
 // MARK: - MapViewModelProtocol extension
 extension MapViewModel: MapViewModelProtocol {
     func onViewWillAppear() {
-
+        // FIXME: nO DELETE
+//        deleteCoredata()
         // Set location to user location
         self.viewDelegate?.setUpLocation()
         
-        // Get heroes their locations and annotations. Each time a hero is saved, pin his annotation on the map
-        self.getHeroes { hero in
-            self.getLocations(forHero: hero) { annotation in
-                self.add(annotation: annotation)
+        heroes = coreDataManager.fetchObjects()
+        locations = coreDataManager.fetchObjects()
+
+        if heroes.count == 0 {
+            // Get heroes their locations and annotations. Each time a hero is saved, pin his annotation on the map
+            self.getHeroes { hero in
+                self.getLocations(forHero: hero) { annotation in
+                    self.add(annotation: annotation)
+                }
+            }
+            dispatchGroup.notify(queue: .main) {
+                self.heroes = self.coreDataManager.fetchObjects()
+                // Set search bar
+                self.viewDelegate?.setSearchBar()
+                // Switch label, indicanting that heros and locations were succesfully loaded
+                self.viewDelegate?.switchLoadingHerosLabel()
             }
         }
-        dispatchGroup.notify(queue: .main) {
-            // Set search bar
+        
+        if heroes.count > 0 {
+            locations.forEach { location in
+                guard let annotation = self.getAnnotation(forLocation: location, withTitle: location.hero?.name ?? "noname") else {return}
+                self.add(annotation: annotation)
+            }
             self.viewDelegate?.setSearchBar()
             // Switch label, indicanting that heros and locations were succesfully loaded
             self.viewDelegate?.switchLoadingHerosLabel()
-            // FIXME: Mock printing
-            let heross: [Hero] = self.coreDataManager.fetchObjects(withEntityType: Hero.self) 
-            for hero in heross {
-                print("\(hero.name!) in array of \(heross.count) heros")
-            }
         }
         
     }
@@ -71,8 +83,6 @@ extension MapViewModel: MapViewModelProtocol {
         dispatchGroup.enter()
         networkHelper.getHeroes { heroes, _ in
             heroes.forEach {
-                // Add hero to array
-                self.heroes.append($0)
                 // Add locations
                 completion($0)
             }
@@ -84,18 +94,22 @@ extension MapViewModel: MapViewModelProtocol {
         guard let id = hero.id,
               let name = hero.name
         else {return}
-
+        
         networkHelper.getLocations(id: id) { locationModels, error in
-                locationModels.forEach {
-                    // Add location to array
-                    self.locations.append($0)
-                    // Add annotation
-                    guard let annotation = self.getAnnotation(forLocation: $0, withTitle: name) else {return}
-                    completion(annotation)
-                }
-            self.dispatchGroup.leave()
+            // Set the locations for each hero
+            hero.locations = NSSet(array: locationModels)
+            
+            locationModels.forEach {
+                // Set the hero for each location
+                $0.hero = hero
+                // Add annotation
+                guard let annotation = self.getAnnotation(forLocation: $0, withTitle: name) else {return}
+                completion(annotation)
             }
+            self.dispatchGroup.leave()
+        }
     }
+    
     private func getAnnotation(forLocation location: Location, withTitle title: String) -> MKPointAnnotation? {
         let annotation = MKPointAnnotation()
         annotation.title = title
@@ -108,7 +122,7 @@ extension MapViewModel: MapViewModelProtocol {
         annotations.append(annotation)
         viewDelegate?.pinPoint(annotation: annotation)
     }
-
+    
     private func deleteCoredata() {
         coreDataManager.deleteCoreData(element: "Hero")
         coreDataManager.deleteCoreData(element: "Location")
@@ -126,7 +140,7 @@ extension MapViewModel: MapViewModelProtocol {
         // Add filtered annotations
         for hero in heroes where hero.name!.localizedCaseInsensitiveContains(search) {
             guard let name = hero.name else {return}
-            for location in locations where location.heroId?.id == hero.id {
+            for location in locations where location.hero?.id == hero.id {
                 guard let annotation = getAnnotation(forLocation: location, withTitle: name) else {return}
                 add(annotation: annotation)
             }
@@ -134,9 +148,11 @@ extension MapViewModel: MapViewModelProtocol {
     }
     private func addAllExistentHeroesAndLocations() {
         viewDelegate?.deleteAnnotations()
+        heroes = coreDataManager.fetchObjects()
+        locations = coreDataManager.fetchObjects()
         for hero in heroes {
             guard let name = hero.name else {return}
-            for location in locations where location.heroId?.id == hero.id {
+            for location in locations where location.hero?.id == hero.id {
                 guard let annotation = getAnnotation(forLocation: location, withTitle: name) else {return}
                 add(annotation: annotation)
             }

@@ -178,7 +178,6 @@ final class NetworkHelper {
                 completion([], .decoding)
                 return
             }
-            self.coreDataManager.save()
             
             completion(transformationResponse, nil)
         }

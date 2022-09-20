@@ -14,6 +14,7 @@ protocol MapViewControllerProtocol: AnyObject {
     func switchLoadingHerosLabel()
     func setSearchBar()
     func deleteAnnotations()
+    func navigateToDetailOf(hero: Hero, shownOn dateShow: String)
 }
 
 class MapViewController: UIViewController {
@@ -31,6 +32,8 @@ class MapViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapView.delegate = self
+        locationManager.delegate = self
     }
 
     func setViewModel(withToken token: String?) {
@@ -47,7 +50,6 @@ class MapViewController: UIViewController {
 // MARK: - MapViewControllerProtocol extension
 extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegate {
     func setUpLocation() {
-        locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         mapView.showsUserLocation = true
@@ -81,6 +83,11 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         guard let userLocation = locationManager.location else {return}
         mapView.centerTo(location: userLocation)
+
+    func navigateToDetailOf(hero: Hero, shownOn dateShow: String) {
+        let detailViewController = DetailViewController(nibName: "Detail", bundle: nil)
+        detailViewController.setViewModel(withHero: hero, shownOn: dateShow)
+        present(detailViewController, animated: true)
     }
 }
 
@@ -100,6 +107,17 @@ extension MapViewController: UISearchResultsUpdating {
         searchController.searchBar.setValue("Cancel", forKey: "cancelButtonText")
 
         navigationItem.searchController = searchController
+    }
+}
+
+// MARK: - MKMapViewDelegate extension
+extension MapViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        viewModel?.onSelected(annotation: view)
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        viewModel?.onPressedInfoButtonOn(annotation: view)
     }
 }
 

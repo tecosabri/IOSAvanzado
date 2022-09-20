@@ -83,6 +83,7 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         guard let userLocation = locationManager.location else {return}
         mapView.centerTo(location: userLocation)
+    }
 
     func navigateToDetailOf(hero: Hero, shownOn dateShow: String) {
         let detailViewController = DetailViewController(nibName: "Detail", bundle: nil)

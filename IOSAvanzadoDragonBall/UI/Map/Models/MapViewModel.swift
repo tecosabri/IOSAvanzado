@@ -13,6 +13,8 @@ import CoreData
 protocol MapViewModelProtocol: AnyObject {
     func onViewWillAppear()
     func onUpdateSearchResults(for searchController: UISearchController)
+    func onSelected(annotation: MKAnnotationView)
+    func onPressedInfoButtonOn(annotation: MKAnnotationView)
 }
 
 class MapViewModel {
@@ -50,7 +52,7 @@ extension MapViewModel: MapViewModelProtocol {
         
         heroes = coreDataManager.fetchObjects()
         locations = coreDataManager.fetchObjects()
-
+        
         if heroes.count == 0 {
             // Get heroes their locations and annotations. Each time a hero is saved, pin his annotation on the map
             self.getHeroes { hero in
@@ -110,11 +112,20 @@ extension MapViewModel: MapViewModelProtocol {
     }
     
     private func getAnnotation(forLocation location: Location, withTitle title: String) -> MKPointAnnotation? {
+        // Get annotation with coordinate and title
         let annotation = MKPointAnnotation()
-        annotation.title = title
         guard let latitude = Double(location.latitude ?? "") else {return nil}
         guard let longitude = Double(location.longitude ?? "") else {return nil}
-        annotation.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        annotation.coordinate = coordinate
+        annotation.title = title
+        // Format subtitle as understandable data
+        let dateFormatter = ISO8601DateFormatter()
+        guard let date = dateFormatter.date(from: location.dateShow ?? "") else {
+            print("Unable to get date")
+            return nil
+        }
+        annotation.subtitle = date.formatted()
         return annotation
     }
     private func add(annotation: MKPointAnnotation) {
@@ -156,6 +167,22 @@ extension MapViewModel: MapViewModelProtocol {
                 add(annotation: annotation)
             }
         }
+    }
+    
+    func onSelected(annotation: MKAnnotationView) {
+        annotation.canShowCallout = true
+        annotation.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+    }
+    
+    func onPressedInfoButtonOn(annotation: MKAnnotationView) {
+        guard let pointAnnotation = annotation.annotation,
+              let heroName = pointAnnotation.title ?? nil,
+              let dateShown = pointAnnotation.subtitle ?? nil
+        else { return}
+        
+        let predicateOfFetchRequest = NSPredicate(format: "name == %@", heroName)
+        let annotationHero: Hero = coreDataManager.fetchObjects(withPredicate: predicateOfFetchRequest)[0]
+        viewDelegate?.navigateToDetailOf(hero: annotationHero, shownOn: dateShown)
     }
 }
 

@@ -77,6 +77,11 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
     func deleteAnnotations() {
         mapView.removeAnnotations(mapView.annotations)
     }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        guard let userLocation = locationManager.location else {return}
+        mapView.centerTo(location: userLocation)
+    }
 }
 
 // MARK: - SearchBar extension

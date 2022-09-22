@@ -82,7 +82,7 @@ final class NetworkHelper {
         let body = Body(name: name)
         let url = "\(server)/api/heros/all"
         
-        performAuthenticatedNetworkRequest(withUrl: url, httpMethod: .get, andHttpBody: body) { (result: Result<[Hero], NetworkError>) in
+        performAuthenticatedNetworkRequest(withUrl: url, httpMethod: .post, andHttpBody: body) { (result: Result<[Hero], NetworkError>) in
             switch result {
             case .success(let heros):
                 completion(heros, nil)
@@ -100,7 +100,7 @@ final class NetworkHelper {
         let body = Body(id: id)
         let url = "\(server)/api/heros/tranformations"
         
-        performAuthenticatedNetworkRequest(withUrl: url, httpMethod: .get, andHttpBody: body) { (result: Result<[Transformation], NetworkError>) in
+        performAuthenticatedNetworkRequest(withUrl: url, httpMethod: .post, andHttpBody: body) { (result: Result<[Transformation], NetworkError>) in
             switch result {
             case .success(let transformations):
                 completion(transformations, nil)
@@ -118,7 +118,7 @@ final class NetworkHelper {
         let body = Body(id: id)
         let url = "\(server)/api/heros/locations"
         
-        performAuthenticatedNetworkRequest(withUrl: url, httpMethod: .get, andHttpBody: body) { (result: Result<[Location], NetworkError>) in
+        performAuthenticatedNetworkRequest(withUrl: url, httpMethod: .post, andHttpBody: body) { (result: Result<[Location], NetworkError>) in
             switch result {
             case .success(let locations):
                 completion(locations, nil)
@@ -157,7 +157,7 @@ private extension NetworkHelper {
             urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             
             if let httpBody {
-                urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
                 urlRequest.httpBody = try? JSONEncoder().encode(httpBody)
             }
             

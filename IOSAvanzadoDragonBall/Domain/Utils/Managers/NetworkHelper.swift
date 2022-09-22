@@ -74,171 +74,114 @@ final class NetworkHelper {
         task.resume()
     }
     
-    
-    
     func getHeroes(name: String = "", completion: @escaping ([Hero], NetworkError?) -> Void) {
-        guard let url = URL(string: "\(server)/api/heros/all") else {
-            completion([], .malformedURL)
-            return
-        }
-        
-        guard let token = self.token else {
-            completion([], .other)
-            return
-        }
-        
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "POST"
-        urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         struct Body: Encodable {
             let name: String
         }
-        
         let body = Body(name: name)
+        let url = "\(server)/api/heros/all"
         
-        urlRequest.httpBody = try? JSONEncoder().encode(body)
-        
-        let task = session.dataTask(with: urlRequest) { data, response, error in
-            guard error == nil else {
-                completion([], .other)
-                return
+        performAuthenticatedNetworkRequest(withUrl: url, httpMethod: .get, andHttpBody: body) { (result: Result<[Hero], NetworkError>) in
+            switch result {
+            case .success(let heros):
+                completion(heros, nil)
+            case .failure(let error):
+                completion([], error)
             }
-            
-            guard let data = data else {
-                completion([], .noData)
-                return
-            }
-            
-            guard let httpResponse = (response as? HTTPURLResponse),
-                  httpResponse.statusCode == 200 else {
-                completion([], .errorCode((response as? HTTPURLResponse)?.statusCode))
-                return
-            }
-            
-            // Get JSONDecoder with the appropriate context
-            let decoder = JSONDecoder(context: self.coreDataManager.container.viewContext)
-            guard let heroesResponse = try? decoder.decode([Hero].self, from: data) else {
-                completion([], .decoding)
-                return
-            }
-            self.coreDataManager.save()
-            
-            completion(heroesResponse, nil)
         }
-        
-        task.resume()
     }
     
-    
-    func getTransformations(id: String, completion: @escaping ([Transformation], NetworkError?) -> Void) {
-        guard let url = URL(string: "\(server)/api/heros/tranformations") else {
-            completion([], .malformedURL)
-            return
-        }
-        
-        guard let token = self.token else {
-            completion([], .other)
-            return
-        }
-        
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "POST"
-        urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    func getTransformations(id: String = "", completion: @escaping ([Transformation], NetworkError?) -> Void) {
         
         struct Body: Encodable {
             let id: String
         }
-        
         let body = Body(id: id)
+        let url = "\(server)/api/heros/tranformations"
         
-        urlRequest.httpBody = try? JSONEncoder().encode(body)
-        
-        let task = session.dataTask(with: urlRequest) { data, response, error in
-            guard error == nil else {
-                completion([], .other)
-                return
+        performAuthenticatedNetworkRequest(withUrl: url, httpMethod: .get, andHttpBody: body) { (result: Result<[Transformation], NetworkError>) in
+            switch result {
+            case .success(let transformations):
+                completion(transformations, nil)
+            case .failure(let error):
+                completion([], error)
             }
-            
-            guard let data = data else {
-                completion([], .noData)
-                return
-            }
-            
-            guard let httpResponse = (response as? HTTPURLResponse),
-                  httpResponse.statusCode == 200 else {
-                completion([], .errorCode((response as? HTTPURLResponse)?.statusCode))
-                return
-            }
-            
-            let decoder = JSONDecoder(context: self.coreDataManager.container.viewContext)
-            guard let transformationResponse = try? decoder.decode([Transformation].self, from: data) else {
-                completion([], .decoding)
-                return
-            }
-            
-            completion(transformationResponse, nil)
         }
-        
-        task.resume()
     }
     
-    func getLocations(id: String, completion: @escaping ([Location], NetworkError?) -> Void) {
-        guard let url = URL(string: "\(server)/api/heros/locations") else {
-            completion([], .malformedURL)
-            return
-        }
-        
-        guard let token = self.token else {
-            completion([], .other)
-            return
-        }
-        
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "POST"
-        urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    func getLocations(id: String = "", completion: @escaping ([Location], NetworkError?) -> Void) {
         
         struct Body: Encodable {
             let id: String
         }
-        
         let body = Body(id: id)
+        let url = "\(server)/api/heros/locations"
         
-        urlRequest.httpBody = try? JSONEncoder().encode(body)
-        
-        let task = session.dataTask(with: urlRequest) { data, response, error in
-            guard error == nil else {
-                completion([], .other)
-                return
+        performAuthenticatedNetworkRequest(withUrl: url, httpMethod: .get, andHttpBody: body) { (result: Result<[Location], NetworkError>) in
+            switch result {
+            case .success(let locations):
+                completion(locations, nil)
+            case .failure(let error):
+                completion([], error)
             }
-            
-            guard let data = data else {
-                completion([], .noData)
-                return
-            }
-            
-            guard let httpResponse = (response as? HTTPURLResponse),
-                  httpResponse.statusCode == 200 else {
-                completion([], .errorCode((response as? HTTPURLResponse)?.statusCode))
-                return
-            }
-            
-            // Get JSONDecoder with the appropriate context
-            let decoder = JSONDecoder(context: self.coreDataManager.container.viewContext)
-            guard let locationResponse = try? decoder.decode([Location].self, from: data) else {
-                completion([], .decoding)
-                return
-            }
-            self.coreDataManager.save()
-            
-            completion(locationResponse, nil)
         }
-        
-        task.resume()
+    }
+}
+
+// MARK: - Generic API call
+private extension NetworkHelper {
+    
+    enum HTTPMethod: String {
+        case get = "GET"
+        case post = "POST"
     }
     
+    func performAuthenticatedNetworkRequest<R: Decodable, B: Encodable>(
+        withUrl url: String,
+        httpMethod: HTTPMethod,
+        andHttpBody httpBody: B?,
+        completion: @escaping (Result<R, NetworkError>) -> Void) {
+            // Its mandatory to be logged before using this function
+            guard let token else {
+                fatalError("No token")
+            }
+            
+            guard let url = URL(string: url) else {
+                completion(.failure(.malformedURL))
+                return
+            }
+            
+            var urlRequest = URLRequest(url: url)
+            urlRequest.httpMethod = httpMethod.rawValue
+            urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            
+            if let httpBody {
+                urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                urlRequest.httpBody = try? JSONEncoder().encode(httpBody)
+            }
+            
+            session.dataTask(with: urlRequest) { (data, response, error) in
+                guard error == nil else {
+                    completion(.failure(.other))
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                
+                // Get JSONDecoder with the appropriate context, decode into coredata and then save the object in container
+                let decoder = JSONDecoder(context: self.coreDataManager.container.viewContext)
+                guard let response = try? decoder.decode(R.self, from: data) else {
+                    completion(.failure(.decoding))
+                    return
+                }
+                self.coreDataManager.save()
+
+                completion(.success(response))
+            }.resume()
+        }
 }
 

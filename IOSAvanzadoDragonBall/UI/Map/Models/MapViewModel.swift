@@ -47,9 +47,10 @@ class MapViewModel {
 // MARK: - MapViewModelProtocol extension
 extension MapViewModel: MapViewModelProtocol {
     func onViewWillAppear() {
-        
+        // Set logout button
+        viewDelegate?.setLogOutButton()
         // Set location to user location
-        self.viewDelegate?.setUpLocation()
+        viewDelegate?.setUpLocation()
         
         heroes = coreDataManager.fetchObjects()
         locations = coreDataManager.fetchObjects()

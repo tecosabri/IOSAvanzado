@@ -16,6 +16,7 @@ protocol MapViewControllerProtocol: AnyObject {
     func deleteAnnotations()
     func navigateToDetailOf(hero: Hero, shownOn dateShow: String)
     func navigateToLoginScene()
+    func setLogOutButton()
 }
 
 class MapViewController: UIViewController {
@@ -99,6 +100,19 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
     
     func navigateToLoginScene() {
         navigationController?.pushViewController(LoginViewController(nibName: "LoginView", bundle: nil), animated: false)
+    }
+    
+    func setLogOutButton() {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Exit", style: .plain, target: self, action: #selector(logout))
+    }
+    @objc
+    func logout() {
+        showYesNoAlert(withTitle: "Logout?", andMessage: "Are you sure you want to logout?") { answer in
+            if answer {
+                LocalDataModel.deleteToken()
+                self.navigationController?.popToRootViewController(animated: false)
+            }
+        }
     }
 }
 

@@ -15,6 +15,7 @@ protocol MapViewModelProtocol: AnyObject {
     func onUpdateSearchResults(for searchController: UISearchController)
     func onSelected(annotation: MKAnnotationView)
     func onPressedInfoButtonOn(annotation: MKAnnotationView)
+    func onViewWillDisappear(withNavigationController navigationController: UINavigationController?)
 }
 
 class MapViewModel {
@@ -183,6 +184,16 @@ extension MapViewModel: MapViewModelProtocol {
         let predicateOfFetchRequest = NSPredicate(format: "name == %@", heroName)
         let annotationHero: Hero = coreDataManager.fetchObjects(withPredicate: predicateOfFetchRequest)[0]
         viewDelegate?.navigateToDetailOf(hero: annotationHero, shownOn: dateShown)
+    }
+    
+    func onViewWillDisappear(withNavigationController navigationController: UINavigationController?) {
+        guard let navigationControllers = navigationController?.viewControllers else {return}
+        let length = navigationControllers.count
+        guard let previousViewController = length >= 1 ? navigationControllers[length - 1] : nil else {return}
+        // If the previous view controller is welcome view controller, then navigate to login
+        guard previousViewController.isKind(of: WelcomeViewController.self) else { return }
+        
+        viewDelegate?.navigateToLoginScene()
     }
 }
 

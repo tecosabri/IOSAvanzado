@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8706437A28E2FB1D00B44A38 /* LoginViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8706437928E2FB1D00B44A38 /* LoginViewControllerSpy.swift */; };
 		87160F3828E1C98C0062338D /* LoginViewModelSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87160F3728E1C98C0062338D /* LoginViewModelSpy.swift */; };
 		871CA00428D50EEB001FF178 /* CodingUserInfoKeyExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871CA00228D50EEB001FF178 /* CodingUserInfoKeyExtension.swift */; };
 		871CA00528D50EEB001FF178 /* JSONDecoderAndEncoderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871CA00328D50EEB001FF178 /* JSONDecoderAndEncoderExtension.swift */; };
@@ -75,6 +76,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8706437928E2FB1D00B44A38 /* LoginViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewControllerSpy.swift; sourceTree = "<group>"; };
 		87160F3728E1C98C0062338D /* LoginViewModelSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelSpy.swift; sourceTree = "<group>"; };
 		871CA00228D50EEB001FF178 /* CodingUserInfoKeyExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodingUserInfoKeyExtension.swift; sourceTree = "<group>"; };
 		871CA00328D50EEB001FF178 /* JSONDecoderAndEncoderExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONDecoderAndEncoderExtension.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				87259CA728DED4A700532034 /* WelcomeViewControllerSpy.swift */,
 				87259CA128DED17000532034 /* NavigationControllerSpy.swift */,
 				87160F3728E1C98C0062338D /* LoginViewModelSpy.swift */,
+				8706437928E2FB1D00B44A38 /* LoginViewControllerSpy.swift */,
 			);
 			path = "Test Classes";
 			sourceTree = "<group>";
@@ -733,6 +736,7 @@
 				87259CA428DED17000532034 /* WelcomeViewControllerTests.swift in Sources */,
 				87E17C4C28E06359006FED68 /* LoginViewControllerTests.swift in Sources */,
 				87259CA328DED17000532034 /* WelcomeViewModelTests.swift in Sources */,
+				8706437A28E2FB1D00B44A38 /* LoginViewControllerSpy.swift in Sources */,
 				87E17C4A28E0634E006FED68 /* LoginViewModelTests.swift in Sources */,
 				87D452D028DF7EDE000A613C /* NetworkHelperTests.swift in Sources */,
 				87E66A6228DF98F600323DDC /* LocationTests.swift in Sources */,

@@ -50,7 +50,7 @@ class LoginViewController: UIViewController {
         viewModel?.onViewWillAppear(withUser: user)
     }
     
-    private func setViewModel() {
+     func setViewModel() {
         self.viewModel = LoginViewModel(viewDelegate: self)
     }
     

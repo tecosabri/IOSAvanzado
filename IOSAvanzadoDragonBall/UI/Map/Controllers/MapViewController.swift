@@ -109,7 +109,7 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
     func logout() {
         showYesNoAlert(withTitle: "Logout?", andMessage: "Are you sure you want to logout?") { answer in
             if answer {
-                LocalDataModel.deleteToken()
+                try? KeychainManager.deletePassword(forAccount: "DragonBall")
                 self.navigationController?.popToRootViewController(animated: false)
             }
         }

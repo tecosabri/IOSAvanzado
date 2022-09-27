@@ -92,24 +92,6 @@ final class NetworkHelper {
         }
     }
     
-    func getTransformations(id: String = "", completion: @escaping ([Transformation], NetworkError?) -> Void) {
-        
-        struct Body: Encodable {
-            let id: String
-        }
-        let body = Body(id: id)
-        let url = "\(server)/api/heros/tranformations"
-        
-        performAuthenticatedNetworkRequest(withUrl: url, httpMethod: .post, andHttpBody: body) { (result: Result<[Transformation], NetworkError>) in
-            switch result {
-            case .success(let transformations):
-                completion(transformations, nil)
-            case .failure(let error):
-                completion([], error)
-            }
-        }
-    }
-    
     func getLocations(id: String = "", completion: @escaping ([Location], NetworkError?) -> Void) {
         
         struct Body: Encodable {

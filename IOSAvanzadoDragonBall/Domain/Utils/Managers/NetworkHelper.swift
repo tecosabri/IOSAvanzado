@@ -21,7 +21,7 @@ final class NetworkHelper {
     
     // MARK: - Properties
     let session: URLSession
-    let server: String = "https://vapor2022.herokuapp.com"
+    let server: String = "https://dragonball.keepcoding.education/"
     let coreDataManager = CoreDataManager()
     var token: String?
     
@@ -86,24 +86,6 @@ final class NetworkHelper {
             switch result {
             case .success(let heros):
                 completion(heros, nil)
-            case .failure(let error):
-                completion([], error)
-            }
-        }
-    }
-    
-    func getTransformations(id: String = "", completion: @escaping ([Transformation], NetworkError?) -> Void) {
-        
-        struct Body: Encodable {
-            let id: String
-        }
-        let body = Body(id: id)
-        let url = "\(server)/api/heros/tranformations"
-        
-        performAuthenticatedNetworkRequest(withUrl: url, httpMethod: .post, andHttpBody: body) { (result: Result<[Transformation], NetworkError>) in
-            switch result {
-            case .success(let transformations):
-                completion(transformations, nil)
             case .failure(let error):
                 completion([], error)
             }

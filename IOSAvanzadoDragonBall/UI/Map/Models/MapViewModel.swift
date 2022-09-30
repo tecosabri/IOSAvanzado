@@ -182,6 +182,10 @@ extension MapViewModel: MapViewModelProtocol {
               let dateShown = pointAnnotation.subtitle ?? nil
         else { return}
         
+        guard annotation.annotation?.title != "noname" else {
+            addAllExistentHeroesAndLocations()
+            return
+        }
         let predicateOfFetchRequest = NSPredicate(format: "name == %@", heroName)
         let annotationHero: Hero = coreDataManager.fetchObjects(withPredicate: predicateOfFetchRequest)[0]
         viewDelegate?.navigateToDetailOf(hero: annotationHero, shownOn: dateShown)

@@ -13,7 +13,7 @@ public struct HeroId: Codable {
     let id: String
 }
 
-public class Location: NSManagedObject, Codable {
+public class Location: NSManagedObject, Decodable {
     
     // MARK: - Entity properties
     @NSManaged var latitude: String?
@@ -36,7 +36,7 @@ public class Location: NSManagedObject, Codable {
               let managedObjectContext = decoder.userInfo[codingUserInfoKeyManagedObjectContext] as? NSManagedObjectContext,
               let entity = NSEntityDescription.entity(forEntityName: "Location", in: managedObjectContext)
         else {
-            fatalError("Failed to decode location")
+            throw DecodingError.decodingError
         }
         
         self.init(entity: entity, insertInto: managedObjectContext)
@@ -49,19 +49,20 @@ public class Location: NSManagedObject, Codable {
             self.latitude = try container.decodeIfPresent(String.self, forKey: .latitud)
             guard let heroId: HeroId = try container.decodeIfPresent(HeroId.self, forKey: .hero) else {return}
             self.heroId = heroId.id
-        } catch let error {
-            fatalError(error.localizedDescription)
+        } catch {
+            throw DecodingError.decodingError
         }
     }
     
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(latitude, forKey: .latitud)
-        try container.encode(longitude, forKey: .longitud)
-        try container.encode(dateShow, forKey: .dateShow)
-        try container.encode(heroId, forKey: .hero)
-    }
+    // Unmark and set class Codable to get a Decodable + Encodable class
+//    public func encode(to encoder: Encoder) throws {
+//        var container = encoder.container(keyedBy: CodingKeys.self)
+//        try container.encode(id, forKey: .id)
+//        try container.encode(latitude, forKey: .latitud)
+//        try container.encode(longitude, forKey: .longitud)
+//        try container.encode(dateShow, forKey: .dateShow)
+//        try container.encode(heroId, forKey: .hero)
+//    }
 }
 
 extension Location : Identifiable {

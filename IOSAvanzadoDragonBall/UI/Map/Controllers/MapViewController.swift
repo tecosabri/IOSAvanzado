@@ -69,9 +69,7 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
     }
     
     func pinPoint(annotation: MKPointAnnotation) {
-        DispatchQueue.main.async {
-            self.mapView.addAnnotation(annotation)
-        }
+        self.mapView.addAnnotation(annotation)
     }
     
     func switchLoadingHerosLabel() {
@@ -89,6 +87,9 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         guard let userLocation = locationManager.location else {return}
+        if manager.authorizationStatus == .denied {
+            return
+        }
         mapView.centerTo(location: userLocation)
     }
 
@@ -109,7 +110,7 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
     func logout() {
         showYesNoAlert(withTitle: "Logout?", andMessage: "Are you sure you want to logout?") { answer in
             if answer {
-                LocalDataModel.deleteToken()
+                try? KeychainManager.deletePassword(forAccount: "DragonBall")
                 self.navigationController?.popToRootViewController(animated: false)
             }
         }

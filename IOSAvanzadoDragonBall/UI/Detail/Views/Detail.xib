@@ -45,10 +45,10 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vHd-kP-gPG">
-                                    <rect key="frame" x="50" y="547.5" width="314" height="50"/>
+                                    <rect key="frame" x="40" y="547.5" width="334" height="50"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="50" id="Hqy-Lc-SeF"/>
+                                        <constraint firstAttribute="height" constant="50" id="bWw-pA-dh7"/>
                                     </constraints>
                                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                     <color key="textColor" systemColor="labelColor"/>
@@ -59,9 +59,9 @@
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
                                 <constraint firstItem="vHd-kP-gPG" firstAttribute="top" secondItem="kXU-8q-UV5" secondAttribute="bottom" constant="100" id="8SC-c9-BoN"/>
-                                <constraint firstAttribute="trailing" secondItem="vHd-kP-gPG" secondAttribute="trailing" constant="50" id="Vpj-Za-mpL"/>
+                                <constraint firstAttribute="trailing" secondItem="vHd-kP-gPG" secondAttribute="trailing" constant="40" id="Vpj-Za-mpL"/>
                                 <constraint firstItem="kXU-8q-UV5" firstAttribute="leading" secondItem="Ks8-ZY-UBP" secondAttribute="leading" constant="16" id="XpU-6U-Zgy"/>
-                                <constraint firstItem="vHd-kP-gPG" firstAttribute="leading" secondItem="Ks8-ZY-UBP" secondAttribute="leading" constant="50" id="cdN-mK-Fxr"/>
+                                <constraint firstItem="vHd-kP-gPG" firstAttribute="leading" secondItem="Ks8-ZY-UBP" secondAttribute="leading" constant="40" id="cdN-mK-Fxr"/>
                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="kXU-8q-UV5" secondAttribute="bottom" constant="40" id="pHT-Jc-S2e"/>
                                 <constraint firstItem="3YQ-XI-c3R" firstAttribute="leading" secondItem="Ks8-ZY-UBP" secondAttribute="leading" constant="16" id="rIM-EJ-pe3"/>
                                 <constraint firstItem="kXU-8q-UV5" firstAttribute="top" secondItem="3YQ-XI-c3R" secondAttribute="bottom" constant="20" id="vJR-05-rfv"/>

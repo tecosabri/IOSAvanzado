@@ -15,6 +15,8 @@ protocol MapViewControllerProtocol: AnyObject {
     func setSearchBar()
     func deleteAnnotations()
     func navigateToDetailOf(hero: Hero, shownOn dateShow: String)
+    func navigateToLoginScene()
+    func setLogOutButton()
 }
 
 class MapViewController: UIViewController {
@@ -44,6 +46,11 @@ class MapViewController: UIViewController {
         super.viewWillAppear(animated)
         viewModel?.onViewWillAppear()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel?.onViewWillDisappear(withNavigationController: navigationController)
+    }
 
 }
 
@@ -62,9 +69,7 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
     }
     
     func pinPoint(annotation: MKPointAnnotation) {
-        DispatchQueue.main.async {
-            self.mapView.addAnnotation(annotation)
-        }
+        self.mapView.addAnnotation(annotation)
     }
     
     func switchLoadingHerosLabel() {
@@ -82,6 +87,9 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         guard let userLocation = locationManager.location else {return}
+        if manager.authorizationStatus == .denied {
+            return
+        }
         mapView.centerTo(location: userLocation)
     }
 
@@ -89,6 +97,23 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
         let detailViewController = DetailViewController(nibName: "Detail", bundle: nil)
         detailViewController.setViewModel(withHero: hero, shownOn: dateShow)
         present(detailViewController, animated: true)
+    }
+    
+    func navigateToLoginScene() {
+        navigationController?.pushViewController(LoginViewController(nibName: "LoginView", bundle: nil), animated: false)
+    }
+    
+    func setLogOutButton() {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Exit", style: .plain, target: self, action: #selector(logout))
+    }
+    @objc
+    func logout() {
+        showYesNoAlert(withTitle: "Logout?", andMessage: "Are you sure you want to logout?") { answer in
+            if answer {
+                try? KeychainManager.deletePassword(forAccount: "DragonBall")
+                self.navigationController?.popToRootViewController(animated: false)
+            }
+        }
     }
 }
 

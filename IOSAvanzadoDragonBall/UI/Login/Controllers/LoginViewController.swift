@@ -50,13 +50,12 @@ class LoginViewController: UIViewController {
         viewModel?.onViewWillAppear(withUser: user)
     }
     
-    private func setViewModel() {
+     func setViewModel() {
         self.viewModel = LoginViewModel(viewDelegate: self)
     }
     
     // MARK: - IBActions
     @IBAction func onPressEnterButton(_ sender: Any) {
-        // TODO: Check nil pass and user, not empty etc
         guard let user = userTextField.text else {return}
         guard let password = passwordTextField.text else {return}
         viewModel?.onPressEnterButton(withUser: user, andPassword: password)

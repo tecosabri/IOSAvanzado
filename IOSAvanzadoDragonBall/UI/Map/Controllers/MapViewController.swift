@@ -69,9 +69,7 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
     }
     
     func pinPoint(annotation: MKPointAnnotation) {
-        DispatchQueue.main.async {
-            self.mapView.addAnnotation(annotation)
-        }
+        self.mapView.addAnnotation(annotation)
     }
     
     func switchLoadingHerosLabel() {
@@ -89,6 +87,9 @@ extension MapViewController: MapViewControllerProtocol, CLLocationManagerDelegat
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         guard let userLocation = locationManager.location else {return}
+        if manager.authorizationStatus == .denied {
+            return
+        }
         mapView.centerTo(location: userLocation)
     }
 

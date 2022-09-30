@@ -140,7 +140,7 @@ class LoginViewModelTests: XCTestCase {
         // then the view delegate saves the password
         guard let password = try? KeychainManager.getPassword(forAccount: user) else { return }
         XCTAssertEqual(password, password)
-        try! KeychainManager.deletePassword(forAccount: user)
+        try? KeychainManager.deletePassword(forAccount: user)
     }
     
     // MARK: Decide to autocomplete
@@ -156,13 +156,13 @@ class LoginViewModelTests: XCTestCase {
     func testloginViewModel_whenDecideToAutocompleteWithYesAnswerAndSavedPassword_autocompletesAndEnablesEnterButton() {
         // given
         let answer = true
-        try! KeychainManager.save(password: password, forAccount: user)
+        try? KeychainManager.save(password: password, forAccount: user)
         // when
         sut.onDecideToAutocompletePassword(withAnswer: answer, andUser: user)
         // then the view delegate autocompletes and enables enter button
         XCTAssertTrue(viewDelegate.callingState.contains(.autocompletePasswordTextField))
         XCTAssertTrue(viewDelegate.callingState.contains(.enableEnterButton))
-        try! KeychainManager.deletePassword(forAccount: user)
+        try? KeychainManager.deletePassword(forAccount: user)
     }
     
     func testloginViewModel_whenDecideToAutocompleteWithYesAnswerAndUnsavedPassword_autocompletesAndEnablesEnterButton() {
@@ -177,11 +177,11 @@ class LoginViewModelTests: XCTestCase {
     // MARK: OnviewWillAppear
     func testloginViewModel_whenViewWillAppearWithSavedPassword_showsDecideToAutocomplete() {
         // given
-        try! KeychainManager.save(password: password, forAccount: user)
+        try? KeychainManager.save(password: password, forAccount: user)
         // when
         sut.onViewWillAppear(withUser: user)
         // then the view delegate shows decide to autocomplete
         XCTAssertTrue(viewDelegate.callingState.contains(.showDecideToAutocomplete))
-        try! KeychainManager.deletePassword(forAccount: user)
+        try? KeychainManager.deletePassword(forAccount: user)
     }
 }

@@ -21,7 +21,7 @@ final class NetworkHelper {
     
     // MARK: - Properties
     let session: URLSession
-    let server: String = "https://vapor2022.herokuapp.com"
+    let server: String = "https://dragonball.keepcoding.education/"
     let coreDataManager = CoreDataManager()
     var token: String?
     

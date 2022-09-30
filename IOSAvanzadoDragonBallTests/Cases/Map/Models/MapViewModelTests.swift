@@ -6,30 +6,56 @@
 //
 
 import XCTest
+import MapKit
+@testable import IOSAvanzadoDragonBall
 
 final class MapViewModelTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    var sut: MapViewModel!
+    var mapViewControllerSpy: MapViewControllerSpy!
+    var mockToken =
+    """
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InByaXZhdGUifQ.eyJleHBpcmF0aW9uIjo2NDA5MjIxMTIwMCwiaWRlbnRpZnkiOiI3QUI4QUM0RC1BRDhGLTRBQ0UtQUE0NS0yMUU4NEFFOEJCRTciLCJlbWFpbCI6ImJlamxAa2VlcGNvZGluZy5lcyJ9.UQkianJsXDCQyUw-2QUPOL0aY2Vq-maWoHGYSJkzI9Q
+    """
+    
+    override func setUp() {
+        super.setUp()
+        mapViewControllerSpy = MapViewControllerSpy()
+        sut = MapViewModel(viewDelegate: mapViewControllerSpy, withToken: mockToken)
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    override func tearDown() {
+        sut = nil
+        super.tearDown()
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    
+    func testMapViewModel_whenPressedInfoButtonOnAnnotation_navigateToDetailOfHero() {
+        // given
+        let annotationView = MKAnnotationView()
+        let pointAnnotation = MKPointAnnotation()
+        pointAnnotation.title = "Hero Name"
+        pointAnnotation.subtitle = "Subtitle"
+        annotationView.annotation = pointAnnotation
+        
+        guard let heroData = NetworkHelperTests().getDataFrom(resourceName: "heroes") else {return}
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let decoder = JSONDecoder(context: context)
+        guard (try? decoder.decode([Hero].self, from: heroData)) != nil else {return}
+        
+        // when
+        sut.onPressedInfoButtonOn(annotation: annotationView)
+        // then
+        XCTAssertTrue(mapViewControllerSpy.callingState.contains(.navigateToDetailOf))
+        CoreDataManager().deleteCoreData(element: "Hero")
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testMapViewModel_whenViewWillDisappearPreviousViewControllerIsWelcomeViewController_navigateToLoginScene() {
+        // given
+        let navigationController = UINavigationController(rootViewController: WelcomeViewController())
+        // when
+        sut.onViewWillDisappear(withNavigationController: navigationController)
+        // then
+        XCTAssertTrue(mapViewControllerSpy.callingState.contains(.navigateToLoginScene))
     }
-
+    
 }
